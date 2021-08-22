@@ -8,83 +8,84 @@ module.exports = {
   index: async (req, res) => {
     try {
       const docs = await db.Documents.findAll({ order: [['id', 'DESC']] })
-      const result = docs.map((doc) => {
-        if (doc.PoFile)
-          doc.PoFile = config.server.baseURL + doc.PoFile
-        if (doc.OrderAckFile)
-          doc.OrderAckFile = config.server.baseURL + doc.OrderAckFile
-        if (doc.InvoiceFile)
-          doc.InvoiceFile = config.server.baseURL + doc.InvoiceFile
-        if (doc.PackingListFile)
-          doc.PackingListFile = config.server.baseURL + doc.PackingListFile
-        if (doc.BillOfLadingFile)
-          doc.BillOfLadingFile = config.server.baseURL + doc.BillOfLadingFile
-        if (doc.AirWayBillFile)
-          doc.AirWayBillFile = config.server.baseURL + doc.AirWayBillFile
-        if (doc.TaxInvoiceFile)
-          doc.TaxInvoiceFile = config.server.baseURL + doc.TaxInvoiceFile
-        if (doc.DeliveryNoticeFile)
-          doc.DeliveryNoticeFile = config.server.baseURL + doc.DeliveryNoticeFile
-
-        if (doc.itemPR) {
-          doc.itemPR = JSON.parse(doc.itemPR)
-          for (const key in doc.itemPR) {
-            if (doc.itemPR[key].PRFileName) {
-              doc.itemPR[key].PRFile = config.server.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
+        const result = docs.map((doc) => {
+          if (doc.PoFile)
+            doc.PoFile = config.server.baseURL + doc.PoFile
+          if (doc.OrderAckFile)
+            doc.OrderAckFile = config.server.baseURL + doc.OrderAckFile
+          if (doc.InvoiceFile)
+            doc.InvoiceFile = config.server.baseURL + doc.InvoiceFile
+          if (doc.PackingListFile)
+            doc.PackingListFile = config.server.baseURL + doc.PackingListFile
+          if (doc.BillOfLadingFile)
+            doc.BillOfLadingFile = config.server.baseURL + doc.BillOfLadingFile
+          if (doc.AirWayBillFile)
+            doc.AirWayBillFile = config.server.baseURL + doc.AirWayBillFile
+          if (doc.TaxInvoiceFile)
+            doc.TaxInvoiceFile = config.server.baseURL + doc.TaxInvoiceFile
+          if (doc.DeliveryNoticeFile)
+            doc.DeliveryNoticeFile = config.server.baseURL + doc.DeliveryNoticeFile
+          if (doc.FreightInvoiceFile)
+            doc.FreightInvoiceFile = config.server.baseURL + doc.FreightInvoiceFile
+          if (doc.itemPR) {
+            doc.itemPR = JSON.parse(doc.itemPR)
+            for (const key in doc.itemPR) {
+              if (doc.itemPR[key].PRFileName) {
+                doc.itemPR[key].PRFile = config.server.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
+              }
             }
           }
-        }
-        return {
-          id: doc.id,
-          DocNo: doc.DocNo,
-          DocDate: doc.DocDate,
-          Status: doc.Status,
-          PoNo: doc.PoNo,
-          PoFileName: doc.PoFileName,
-          PoFile: doc.PoFile,
-          itemPR: doc.itemPR,
-          ProductValue: doc.ProductValue,
-          Currency: doc.Currency,
-          Buyer: doc.Buyer,
-          Supplier: doc.Supplier,
-          Details: doc.Details,
-          PaymentTerm: doc.PaymentTerm,
-          DeliveryTerm: doc.DeliveryTerm,
-          Remarks: doc.Remarks,
-          OrderAckFileName: doc.OrderAckFileName,
-          OrderAckFile: doc.OrderAckFile,
-          DeliveryDate: doc.DeliveryDate,
-          InvoiceNo: doc.InvoiceNo,
-          InvoiceFileName: doc.InvoiceFileName,
-          InvoiceFile: doc.InvoiceFile,
-          PackingListNo: doc.PackingListNo,
-          PackingListFileName: doc.PackingListFileName,
-          PackingListFile: doc.PackingListFile,
-          FreightForworder: doc.FreightForworder,
-          BillOfLadingNo: doc.BillOfLadingNo,
-          BillOfLadingFileName: doc.BillOfLadingFileName,
-          BillOfLadingFile: doc.BillOfLadingFile,
-          AirWayBillNo: doc.AirWayBillNo,
-          AirWayBillFileName: doc.AirWayBillFileName,
-          AirWayBillFile: doc.AirWayBillFile,
-          TaxInvoiceNo: doc.TaxInvoiceNo,
-          TaxInvoiceFileName: doc.TaxInvoiceFileName,
-          TaxInvoiceFile: doc.TaxInvoiceFile,
-          TaxValue: doc.TaxValue,
-          FreightInvoiceNo: doc.FreightInvoiceNo,
-          FreightInvoiceFileName: doc.FreightInvoiceFileName,
-          FreightInvoiceFile: doc.FreightInvoiceFile,
-          FreightInvoiceValue: doc.FreightInvoiceValue,
-          DeliveryNoticeFile: doc.DeliveryNoticeFile,
-          createBy: doc.createBy,
-          updateBy: doc.updateBy,
-          DocPath: doc.DocPath,
-          fileManage: JSON.parse(doc.fileManage),
-          createdAt: doc.createdAt,
-          updatedAt: doc.updatedAt,
-        }
-      })
-      return res.json(result)
+          return {
+            id: doc.id,
+            DocNo: doc.DocNo,
+            DocDate: doc.DocDate,
+            Status: doc.Status,
+            PoNo: doc.PoNo,
+            PoFileName: doc.PoFileName,
+            PoFile: doc.PoFile,
+            itemPR: doc.itemPR,
+            ProductValue: doc.ProductValue,
+            Currency: doc.Currency,
+            Buyer: doc.Buyer,
+            Supplier: doc.Supplier,
+            Details: doc.Details,
+            PaymentTerm: doc.PaymentTerm,
+            DeliveryTerm: doc.DeliveryTerm,
+            Remarks: doc.Remarks,
+            OrderAckFileName: doc.OrderAckFileName,
+            OrderAckFile: doc.OrderAckFile,
+            DeliveryDate: doc.DeliveryDate,
+            InvoiceNo: doc.InvoiceNo,
+            InvoiceFileName: doc.InvoiceFileName,
+            InvoiceFile: doc.InvoiceFile,
+            PackingListNo: doc.PackingListNo,
+            PackingListFileName: doc.PackingListFileName,
+            PackingListFile: doc.PackingListFile,
+            FreightForworder: doc.FreightForworder,
+            BillOfLadingNo: doc.BillOfLadingNo,
+            BillOfLadingFileName: doc.BillOfLadingFileName,
+            BillOfLadingFile: doc.BillOfLadingFile,
+            AirWayBillNo: doc.AirWayBillNo,
+            AirWayBillFileName: doc.AirWayBillFileName,
+            AirWayBillFile: doc.AirWayBillFile,
+            TaxInvoiceNo: doc.TaxInvoiceNo,
+            TaxInvoiceFileName: doc.TaxInvoiceFileName,
+            TaxInvoiceFile: doc.TaxInvoiceFile,
+            TaxValue: doc.TaxValue,
+            FreightInvoiceNo: doc.FreightInvoiceNo,
+            FreightInvoiceFileName: doc.FreightInvoiceFileName,
+            FreightInvoiceFile: doc.FreightInvoiceFile,
+            FreightInvoiceValue: doc.FreightInvoiceValue,
+            DeliveryNoticeFile: doc.DeliveryNoticeFile,
+            createBy: doc.createBy,
+            updateBy: doc.updateBy,
+            DocPath: doc.DocPath,
+            fileManage: JSON.parse(doc.fileManage),
+            createdAt: doc.createdAt,
+            updatedAt: doc.updatedAt,
+          }
+        })
+        return res.json(result)
     } catch (e) {
       return res.status(500).json({ message: 'Cannot get data from database.' })
     }
@@ -110,7 +111,8 @@ module.exports = {
           doc.TaxInvoiceFile = config.server.baseURL + doc.TaxInvoiceFile
         if (doc.DeliveryNoticeFile)
           doc.DeliveryNoticeFile = config.server.baseURL + doc.DeliveryNoticeFile
-
+        if (doc.FreightInvoiceFile)
+          doc.FreightInvoiceFile = config.server.baseURL + doc.FreightInvoiceFile
         if (doc.itemPR) {
           doc.itemPR = JSON.parse(doc.itemPR)
           for (const key in doc.itemPR) {
@@ -120,7 +122,7 @@ module.exports = {
           }
         }
 
-       const result = {
+        const result = {
           id: doc.id,
           DocNo: doc.DocNo,
           DocDate: doc.DocDate,
@@ -171,7 +173,7 @@ module.exports = {
         }
         return res.json(result)
       }
-      return res.json({status:false, message: 'No data from database.' })
+      return res.json({ status: false, message: 'No data from database.' })
 
     } catch (e) {
       return res.status(500).json({ message: 'Cannot get data from database.' })
