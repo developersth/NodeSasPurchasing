@@ -307,10 +307,126 @@ module.exports = {
   update: async (req, res) => {
     const id = req.params.id
     const data = req.body
-    if (id && data) {
-      const result = await db.Documents.update(data, { where: { id: id } })
-      console.log(result)
-      return res.json({ success: true, message: 'Documents Update Successfully ', result })
+    if (id&&data) {
+      try {
+        let DocNo = ''
+        //let id = 1
+
+        if (data.itemPR) {
+          data.itemPR = JSON.parse(data.itemPR)
+        }
+        if (data.fileManage) {
+          data.fileManage = JSON.parse(data.fileManage)
+        }
+        const body = {
+          Status: data.Status,
+          PoNo: data.PoNo,
+          DocDate: data.DocDate,
+          ProductValue: data.ProductValue,
+          Currency: data.Currency,
+          Buyer: data.Buyer,
+          Supplier: data.Supplier,
+          Details: data.Details,
+          PaymentTerm: data.PaymentTerm,
+          DeliveryTerm: data.DeliveryTerm,
+          Remarks: data.Remarks,
+          DeliveryDate: data.DeliveryDate,
+          InvoiceNo: data.InvoiceNo,
+          PackingListNo: data.PackingListNo,
+          FreightForworder: data.FreightForworder,
+          BillOfLadingNo: data.BillOfLadingNo,
+          AirWayBillNo: data.AirWayBillNo,
+          TaxInvoiceNo: data.TaxInvoiceNo,
+          TaxValue: data.TaxValue,
+          FreightInvoiceNo: data.FreightInvoiceNo,
+          FreightInvoiceValue: data.FreightInvoiceValue,
+          itemPR: data.itemPR,
+          fileManage: data.fileManage
+        }
+
+        const docs=await db.Documents.update(body,{ where: { id: id } })
+
+        const result = await db.Documents.findByPk(id);
+        var dir = ''
+        if (result){
+          dir = `${result.DocPath}`
+          DocNo= `${result.DocNo}`
+        }
+
+        var oldPath = config.documents.tempfiles
+        var newPath = dir
+        if (!fs.existsSync(newPath)) {
+          fn.createDirectory(newPath)
+        }
+        if (req.files) {
+          for (const key in req.files) {
+            fs.rename(req.files[key].path, newPath + '/' + req.files[key].originalname, function (err) {
+              if (err) { console.log(err) }
+              console.log(`Move file ${req.files[key].originalname} complete.`)
+            })
+          }
+        }
+
+        let DocPath = newPath
+        if (data.fileManage) { //Update file name and path file
+          for (const key in data.fileManage) {
+            if (data.fileManage[key].name === 'PoFile') {
+              data.PoFileName = data.fileManage[key].filename
+              data.PoFile = newPath + data.fileManage[key].filename
+            }
+            if (data.fileManage[key].name === 'OrderAckFile') {
+              data.OrderAckFileName = data.fileManage[key].filename
+              data.OrderAckFile = newPath + data.fileManage[key].filename
+            }
+            if (data.fileManage[key].name === 'InvoiceFile') {
+              data.InvoiceFileName = data.fileManage[key].filename
+              data.InvoiceFile = newPath + data.fileManage[key].filename
+            }
+            if (data.fileManage[key].name === 'PackingListFile') {
+              data.PackingListFileName = data.fileManage[key].filename
+              data.PackingListFile = newPath + data.fileManage[key].filename
+            }
+            if (data.fileManage[key].name === 'BillOfLadingFile') {
+              data.BillOfLadingFileName = data.fileManage[key].filename
+              data.BillOfLadingFile = newPath + data.fileManage[key].filename
+            }
+            if (data.fileManage[key].name === 'AirWayBillFile') {
+              data.AirWayBillFileName = data.fileManage[key].filename
+              data.AirWayBillFile = newPath + data.fileManage[key].filename
+            }
+            if (data.fileManage[key].name === 'FreightInvoiceFile') {
+              data.FreightInvoiceFileName = data.fileManage[key].filename
+              data.FreightInvoiceFile = newPath + data.fileManage[key].filename
+            }
+            if (data.fileManage[key].name === 'DeliveryNoticeFile') {
+              data.DeliveryNoticeFileName = data.fileManage[key].filename
+              data.DeliveryNoticeFile = newPath + data.fileManage[key].filename
+            }
+          }
+        }
+        const docfile = {
+          PoFileName: data.PoFileName,
+          PoFile: data.PoFile,
+          OrderAckFileName: data.OrderAckFileName,
+          OrderAckFile: data.OrderAckFile,
+          InvoiceFileName: data.InvoiceFileName,
+          InvoiceFile: data.InvoiceFile,
+          PackingListFileName: data.PackingListFileName,
+          PackingListFile: data.PackingListFile,
+          BillOfLadingFileName: data.BillOfLadingFileName,
+          BillOfLadingFile: data.BillOfLadingFile,
+          AirWayBillFileName: data.AirWayBillFileName,
+          AirWayBillFile: data.AirWayBillFile,
+          FreightInvoiceFileName: data.FreightInvoiceFileName,
+          FreightInvoiceFile: data.FreightInvoiceFile,
+          DeliveryNoticeFileName: data.DeliveryNoticeFileName,
+          DeliveryNoticeFile: data.DeliveryNoticeFile,
+        }
+        await db.Documents.update(docfile, { where: { id: id } }) //update DocFile.
+        return res.status(200).json({ success: true, message: 'Documents Update Successfully', docs })
+      } catch (e) {
+        return res.json({ success: false, message: 'Cannot store data to database.' })
+      }
     }
     return res.status(400).json({ success: false, message: 'Bad request.' })
   },
@@ -319,6 +435,24 @@ module.exports = {
     if (id) {
       try {
         const result = await db.Documents.findByPk(id);
+        var dir = ''
+        if (result)
+          dir = `${result.DocPath}`
+        const doc = await db.Documents.destroy({ where: { id } })
+        try { if (doc) { fs.rmdirSync(dir, { recursive: true }) } } catch (err) { if (!err) console.log('delete images file ' + imagePath) }
+        return res.send({ success: true, message: 'Delete Documents Successfully' });
+      } catch (e) {
+        return res.json({ success: false, message: 'Cannot remove data from database.' })
+      }
+    } else {
+      return res.status(400).json({ success: false, message: 'Bad request.' })
+    }
+  },
+  destroyItems: async (req, res) => {
+    const data = req.body.data
+    if (data) {
+      try {
+        const result = await db.Documents.findByPk(data.id);
         var dir = ''
         if (result)
           dir = `${result.DocPath}`

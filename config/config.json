@@ -3,7 +3,7 @@
     "username": "ktd",
     "password": "Ln68QL_ViOEJLzdZ",
     "database": "purchasing",
-    "host": "127.0.0.1",
+    "host": "ktd-dev.ddns.net",
     "dialect": "mysql"
   },
   "test": {
@@ -17,7 +17,7 @@
     "username": "ktd",
     "password": "Ln68QL_ViOEJLzdZ",
     "database": "purchasing",
-    "host": "127.0.0.1",
+    "host": "ktd-dev.ddns.net",
     "dialect": "mysql"
   },
   "documents": {
@@ -25,6 +25,6 @@
     "tempfiles": "uploads/tempfiles/"
   },
   "server": {
-    "baseURL": "https://interpurchasing.herokuapp.com/"
+    "baseURL": "http://ktd-dev.ddns.net:5000/"
   }
 }
