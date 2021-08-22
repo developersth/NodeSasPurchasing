@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
+    "username": "ktd",
+    "password": "Ln68QL_ViOEJLzdZ",
     "database": "purchasing",
     "host": "127.0.0.1",
     "dialect": "mysql"
@@ -14,9 +14,9 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
+    "username": "ktd",
+    "password": "Ln68QL_ViOEJLzdZ",
+    "database": "purchasing",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
@@ -25,6 +25,6 @@
     "tempfiles": "uploads/tempfiles/"
   },
   "server": {
-    "baseURL": "http://ktd-dev.ddns.net:5000/"
+    "baseURL": "https://interpurchasing.herokuapp.com/"
   }
 }
