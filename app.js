@@ -37,10 +37,10 @@ var corsOptionsDelegate = function (req, callback) {
   callback(null, corsOptions) // callback expects two parameters: error and options
 }
 app.use(cors(corsOptionsDelegate));
-require('./config/passport');
 app.use('/', indexRouter);
 app.use('/api/auth', authRouter);
-app.use('/api/users', passport.authenticate('jwt', { session: false }), usersRouter);
+app.use('/api/users', usersRouter);
+//app.use('/api/users', usersRouter);
 app.use('/api/documents', documentsRouter);
 app.use('/upload', uploadRouter);
 app.use('/api/supplier', supplierRouter);

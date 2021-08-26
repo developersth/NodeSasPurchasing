@@ -35,7 +35,7 @@ module.exports = {
         // Send JWT
         // Create and assign token
         const token = jwt.sign(req.body.username, 'your_jwt_secret');
-        res.header("auth-token", token).send({
+       const data={
           success: true,
           message: "Login Succesfully",
           user:{
@@ -45,13 +45,17 @@ module.exports = {
             email: user.email,
             mobile: user.mobile,
           }
-        });
+        };
+        return res.json(data)
       }
 
     } else {
       return res.status(200).json({ success: false, message: 'data not found ' });
     }
 
+  },
+  logout: async (req, res) => {
+    return res.json({success:true,message:'OK'})
   },
   store: async (req, res) => {
     const data = req.body
