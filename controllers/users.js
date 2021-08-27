@@ -2,7 +2,7 @@ const db = require('../models');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 const { Op } = require("sequelize");
-
+let userProfile;
 module.exports = {
   index: async (req, res) => {
     try {
@@ -22,9 +22,26 @@ module.exports = {
       return res.status(500).json({ message: 'Cannot get data from database.' })
     }
   },
+  me: async (req, res) => {
+    try {
+      return res.status(200).json({
+        user: {
+          id: userProfile.id,
+          username: userProfile.username,
+          name: userProfile.name,
+          email: userProfile.email,
+          mobile: userProfile.mobile,
+        },
+      });
+    } catch (e) {
+      return res.status(500).json({ message: 'Cannot get data from database.' })
+    }
+  },
   login: async (req, res) => {
     //const data = req.body;
     // query db.
+    let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
+    ip = ip.replace('::ffff:', '');
     if (!req.body.username || !req.body.password) return res.status(400).send({ success: false, message: 'Invalid Paramiters.' })
     let user = await db.Users.findOne({ username: req.body.username });
     if (!user) return res.status(400).send({ success: false, message: 'Invalid Username or Password.' })
@@ -34,18 +51,27 @@ module.exports = {
       else {
         // Send JWT
         // Create and assign token
-        const token = jwt.sign(req.body.username, 'your_jwt_secret');
-       const data={
+        const signUser = {
+          id: user.id,
+          sub: 'admin_dev',
+          username: user.name,
+          password:  user.password,
+        }
+        const token = jwt.sign(signUser, 'your_jwt_secret');
+        const data = {
           success: true,
           message: "Login Succesfully",
-          user:{
+          user: {
             token: token,
             id: user.id,
             username: user.username,
+            name: user.name,
             email: user.email,
             mobile: user.mobile,
           }
         };
+        userProfile = user;
+        await db.Users.update({ ip: ip, token: token, last_login: new Date() }, { where: { id: user.id } })
         return res.json(data)
       }
 
@@ -55,7 +81,7 @@ module.exports = {
 
   },
   logout: async (req, res) => {
-    return res.json({success:true,message:'OK'})
+    return res.json({ success: true, message: 'OK' })
   },
   store: async (req, res) => {
     const data = req.body
