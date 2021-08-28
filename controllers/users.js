@@ -2,12 +2,35 @@ const db = require('../models');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 const { Op } = require("sequelize");
+const { QueryTypes } = require("sequelize");//condition
+const sequelize = db.sequelize;
+const config = require('../config/config.json')
 let userProfile;
 module.exports = {
   index: async (req, res) => {
     try {
-      const user = await db.Users.findAll()
-      return res.json(user)
+      let sql =`select
+                  users.id,
+                  role_id,
+                  u.name  as role_name,
+                  username,
+                  mobile,
+                  email,
+                  users.name,
+                  department_id,
+                  ip,
+                  session_id,
+                  image_path,
+                  last_login,
+                  users.status,
+                  users.createdAt,
+                  users.updatedAt
+                from
+                  users
+                  left join userroles u
+                  on users.role_id  = u.id`
+      const result = await sequelize.query(sql, { type: QueryTypes.SELECT });
+      return res.json(result)
     } catch (e) {
       return res.status(500).json({ message: 'Cannot get data from database.' })
     }
@@ -31,6 +54,7 @@ module.exports = {
           name: userProfile.name,
           email: userProfile.email,
           mobile: userProfile.mobile,
+          type: userProfile.type,
         },
       });
     } catch (e) {
@@ -43,21 +67,17 @@ module.exports = {
     let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
     ip = ip.replace('::ffff:', '');
     if (!req.body.username || !req.body.password) return res.status(400).send({ success: false, message: 'Invalid Paramiters.' })
-    let user = await db.Users.findOne({ username: req.body.username });
+    let user = await db.Users.findOne({where: {username: req.body.username} });
     if (!user) return res.status(400).send({ success: false, message: 'Invalid Username or Password.' })
     if (user) {
       const validPassword = await bcrypt.compare(req.body.password, user.password);
       if (!validPassword) return res.status(200).send({ success: false, message: 'Password is wrong.' })
       else {
+        let userRole = await db.UserRole.findByPk(user.role_id);
         // Send JWT
         // Create and assign token
-        const signUser = {
-          id: user.id,
-          sub: 'admin_dev',
-          username: user.name,
-          password:  user.password,
-        }
-        const token = jwt.sign(signUser, 'your_jwt_secret');
+        //const signUser = {username:user.username}
+        const token = jwt.sign(req.body, 'your_jwt_secret');
         const data = {
           success: true,
           message: "Login Succesfully",
@@ -68,9 +88,10 @@ module.exports = {
             name: user.name,
             email: user.email,
             mobile: user.mobile,
+            type: userRole.name,
           }
         };
-        userProfile = user;
+        userProfile = data.user;
         await db.Users.update({ ip: ip, token: token, last_login: new Date() }, { where: { id: user.id } })
         return res.json(data)
       }
@@ -103,6 +124,8 @@ module.exports = {
     const id = req.params.id
     const data = req.body
     if (id && data) {
+      const passwordHash = bcrypt.hashSync(data.password, 10);
+      data.password = passwordHash
       const result = await db.Users.update(data, { where: { id: id } })
       console.log(result)
       return res.json({ success: true, message: 'User Update Successfully ', result })

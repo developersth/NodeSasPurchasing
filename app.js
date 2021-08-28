@@ -12,6 +12,7 @@ var documentsRouter = require('./routes/documents');
 var uploadRouter = require('./routes/upload');
 var supplierRouter = require('./routes/supplier');
 var paymenttermRouter = require('./routes/paymentterm');
+var userrolesRouter = require('./routes/userroles');
 var authRouter = require('./routes/auth');
 const bodyParser = require('body-parser');
 var app = express();
@@ -45,6 +46,7 @@ app.use('/api/documents', documentsRouter);
 app.use('/upload', uploadRouter);
 app.use('/api/supplier', supplierRouter);
 app.use('/api/paymentterm', paymenttermRouter);
+app.use('/api/userroles', userrolesRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
