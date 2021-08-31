@@ -40,6 +40,8 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage: storage, limits: { fieldSize: 1024 * 1024 * 50 }, fileFilter: fileFilter });
 router.get('/', documentController.index)
 router.get('/:id', documentController.findById)
+router.get('/get/getpono', documentController.findPoNo)
+router.get('/pono/:pono', documentController.findDataByPoNo)
 router.post('/', upload.array('files'), documentController.store)
 router.put('/:id', upload.array('files'),documentController.update)
 router.delete('/:id', documentController.destroy)

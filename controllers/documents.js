@@ -4,6 +4,7 @@ var fs = require('fs');
 var dateFormat = require("dateformat");
 var now = new Date();
 const config = require('../config/config.json')
+const { Op } = require("sequelize");
 module.exports = {
   index: async (req, res) => {
     try {
@@ -177,6 +178,38 @@ module.exports = {
 
     } catch (e) {
       return res.status(500).json({ message: 'Cannot get data from database.' })
+    }
+  },
+  findPoNo: async (req, res) => {
+    try {
+      const payname= req.query.payname
+      const result = await db.Documents.findAll({attributes: ['PoNo', 'Supplier'],where: { [Op.or]: [{ Supplier: payname }, { FreightForworder: payname }]	},order: [['createdAt', 'DESC']]  })
+      return res.json(result)
+    } catch (e) {
+      return res.status(500).json({ message: 'Cannot get data from database.' })
+    }
+  },
+  findDataByPoNo: async (req, res) => {
+    try {
+      const pono = req.params.pono
+      const result = await db.Documents.findOne({where: { PoNo: pono }	} )
+      if(result){
+        if(result.itemPR)
+          result.itemPR = JSON.parse(result.itemPR)
+        const body={
+          docId:result.DocNo,
+          PoNo:result.PoNo,
+          itemPR:result.itemPR,
+          InvoiceNo:result.InvoiceNo,
+          AirWayBillNo:result.AirWayBillNo
+        }
+        return res.json(body)
+      }else{
+        return res.status(404).json({ message: 'no data from database.' })
+      }
+
+    } catch (e) {
+      return res.status(500).json({ message: 'Cannot  get data from database.' })
     }
   },
   store: async (req, res) => {

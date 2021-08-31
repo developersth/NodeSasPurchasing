@@ -137,10 +137,10 @@ module.exports = {
         type: Sequelize.STRING(150)
       },
       createBy: {
-        type: Sequelize.STRING(30)
+        type: Sequelize.STRING(60)
       },
       updateBy: {
-        type: Sequelize.STRING(30)
+        type: Sequelize.STRING(60)
       },
       createdAt: {
         allowNull: false,

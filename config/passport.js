@@ -10,7 +10,7 @@ const user = {
   id: 1,
   sub: 'admin_dev',
   username: 'admin_dev',
-  password:  'admin_dev',
+  password: 'admin_dev',
 }
 
 passport.use(new LocalStrategy({
@@ -27,20 +27,19 @@ passport.use(new LocalStrategy({
   }
 ));
 
-passport.use(new JWTStrategy({
+passport.use(new JWTStrategy ({ 
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey   : 'your_jwt_secret'
+  secretOrKey: 'your_jwt_secret'
 },
-(jwtPayload, cb) => {
-//find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
-  
-return db.Users.findOne({username:jwtPayload.username})
-   .then(user => {
-       return cb(null, user);
-   })
-   .catch(err => {
-       return cb(err);
-   });
-}
+  (jwtPayload, cb) => {
+    //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
+    return  db.Users.findOne({ username: jwtPayload.username })
+      .then(user => {
+        return cb(null, user);
+      })
+      .catch(err => {
+        return cb(err);
+      });
+  }
 ));
 module.exports = passport

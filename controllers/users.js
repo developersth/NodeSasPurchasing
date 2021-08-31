@@ -77,7 +77,7 @@ module.exports = {
         // Send JWT
         // Create and assign token
         //const signUser = {username:user.username}
-        const token = jwt.sign(req.body, 'your_jwt_secret');
+        const token = jwt.sign(req.body, 'your_jwt_secret',{expiresIn:'4h'});
         const data = {
           success: true,
           message: "Login Succesfully",
@@ -108,6 +108,11 @@ module.exports = {
     const data = req.body
     if (data) {
       try {
+        const oldUser = await db.Users.findOne({ where: { username: data.username } })
+        if(oldUser){
+          return res.status(200).json({ success: false, message: 'User already exist. Pleasy try again' })
+        }
+
         const passwordHash = bcrypt.hashSync(data.password, 10);
         data.password = passwordHash
         const users = await db.sequelize.transaction((t) => {
