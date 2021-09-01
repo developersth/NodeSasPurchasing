@@ -29,7 +29,7 @@ module.exports = {
         field: 'password'
       },
       token: {
-        type: Sequelize.STRING(150),
+        type: Sequelize.TEXT,
         field: 'token'
       },
       name: {

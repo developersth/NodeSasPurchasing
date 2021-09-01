@@ -3,7 +3,9 @@ const fn = require('../plugins/utils');
 var fs = require('fs');
 var dateFormat = require("dateformat");
 var now = new Date();
-const config = require('../config/config.json')
+const env = process.env.NODE_ENV || 'development';
+//const config = require('../config/config.json')
+const config = require(__dirname + '/../config/config.json')[env];
 const { Op } = require("sequelize");
 module.exports = {
   index: async (req, res) => {
@@ -11,28 +13,28 @@ module.exports = {
       const docs = await db.Documents.findAll({ order: [['id', 'DESC']] })
         const result = docs.map((doc) => {
           if (doc.PoFile)
-            doc.PoFile = config.server.baseURL + doc.PoFile
+            doc.PoFile = config.baseURL + doc.PoFile
           if (doc.OrderAckFile)
-            doc.OrderAckFile = config.server.baseURL + doc.OrderAckFile
+            doc.OrderAckFile = config.baseURL + doc.OrderAckFile
           if (doc.InvoiceFile)
-            doc.InvoiceFile = config.server.baseURL + doc.InvoiceFile
+            doc.InvoiceFile = config.baseURL + doc.InvoiceFile
           if (doc.PackingListFile)
-            doc.PackingListFile = config.server.baseURL + doc.PackingListFile
+            doc.PackingListFile = config.baseURL + doc.PackingListFile
           if (doc.BillOfLadingFile)
-            doc.BillOfLadingFile = config.server.baseURL + doc.BillOfLadingFile
+            doc.BillOfLadingFile = config.baseURL + doc.BillOfLadingFile
           if (doc.AirWayBillFile)
-            doc.AirWayBillFile = config.server.baseURL + doc.AirWayBillFile
+            doc.AirWayBillFile = config.baseURL + doc.AirWayBillFile
           if (doc.TaxInvoiceFile)
-            doc.TaxInvoiceFile = config.server.baseURL + doc.TaxInvoiceFile
+            doc.TaxInvoiceFile = config.baseURL + doc.TaxInvoiceFile
           if (doc.DeliveryNoticeFile)
-            doc.DeliveryNoticeFile = config.server.baseURL + doc.DeliveryNoticeFile
+            doc.DeliveryNoticeFile = config.baseURL + doc.DeliveryNoticeFile
           if (doc.FreightInvoiceFile)
-            doc.FreightInvoiceFile = config.server.baseURL + doc.FreightInvoiceFile
+            doc.FreightInvoiceFile = config.baseURL + doc.FreightInvoiceFile
           if (doc.itemPR) {
             doc.itemPR = JSON.parse(doc.itemPR)
             for (const key in doc.itemPR) {
               if (doc.itemPR[key].PRFileName) {
-                doc.itemPR[key].PRFile = config.server.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
+                doc.itemPR[key].PRFile = config.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
               }
             }
           }
@@ -97,28 +99,28 @@ module.exports = {
       const doc = await db.Documents.findByPk(id)
       if (doc) {
         if (doc.PoFile)
-          doc.PoFile = config.server.baseURL + doc.PoFile
+          doc.PoFile = config.baseURL + doc.PoFile
         if (doc.OrderAckFile)
-          doc.OrderAckFile = config.server.baseURL + doc.OrderAckFile
+          doc.OrderAckFile = config.baseURL + doc.OrderAckFile
         if (doc.InvoiceFile)
-          doc.InvoiceFile = config.server.baseURL + doc.InvoiceFile
+          doc.InvoiceFile = config.baseURL + doc.InvoiceFile
         if (doc.PackingListFile)
-          doc.PackingListFile = config.server.baseURL + doc.PackingListFile
+          doc.PackingListFile = config.baseURL + doc.PackingListFile
         if (doc.BillOfLadingFile)
-          doc.BillOfLadingFile = config.server.baseURL + doc.BillOfLadingFile
+          doc.BillOfLadingFile = config.baseURL + doc.BillOfLadingFile
         if (doc.AirWayBillFile)
-          doc.AirWayBillFile = config.server.baseURL + doc.AirWayBillFile
+          doc.AirWayBillFile = config.baseURL + doc.AirWayBillFile
         if (doc.TaxInvoiceFile)
-          doc.TaxInvoiceFile = config.server.baseURL + doc.TaxInvoiceFile
+          doc.TaxInvoiceFile = config.baseURL + doc.TaxInvoiceFile
         if (doc.DeliveryNoticeFile)
-          doc.DeliveryNoticeFile = config.server.baseURL + doc.DeliveryNoticeFile
+          doc.DeliveryNoticeFile = config.baseURL + doc.DeliveryNoticeFile
         if (doc.FreightInvoiceFile)
-          doc.FreightInvoiceFile = config.server.baseURL + doc.FreightInvoiceFile
+          doc.FreightInvoiceFile = config.baseURL + doc.FreightInvoiceFile
         if (doc.itemPR) {
           doc.itemPR = JSON.parse(doc.itemPR)
           for (const key in doc.itemPR) {
             if (doc.itemPR[key].PRFileName) {
-              doc.itemPR[key].PRFile = config.server.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
+              doc.itemPR[key].PRFile = config.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
             }
           }
         }
@@ -374,7 +376,9 @@ module.exports = {
           FreightInvoiceNo: data.FreightInvoiceNo,
           FreightInvoiceValue: data.FreightInvoiceValue,
           itemPR: data.itemPR,
-          fileManage: data.fileManage
+          fileManage: data.fileManage,
+          updateBy:data.updateBy,
+          updatedAt:new Date()
         }
 
         const docs=await db.Documents.update(body,{ where: { id: id } })

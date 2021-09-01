@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cookieParser());
 //app.use(express.static(path.join(__dirname, 'public')));
-var allowlist = ['http://localhost:3000', 'https://ktd-web.firebaseapp.com/', 'https://ktd-web.web.app/']
+var allowlist = ['http://localhost:3000', 'https://ktd-web.firebaseapp.com', 'https://ktd-web.web.app']
 var corsOptionsDelegate = function (req, callback) {
   var corsOptions;
   if (allowlist.indexOf(req.header('Origin')) !== -1) {

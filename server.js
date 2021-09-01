@@ -32,9 +32,9 @@
  
  //server.listen(port);
  server.listen(port, () => {
-   //console.log(`Server is running on port:${port}`);
-   var host = server.address().address
-   console.log(`Server is running At:http://${host}:${port}`);
+    console.log(`Server is running on port:${port}`);
+    console.log(`Server is running on \u001b[32m http://localhost:${port} \u001b[0m`);
+    console.log(`Listening: \u001b[35m http://${ip.address()}:${port} \u001b[0m`);
  });
  server.on('error', onError);
  server.on('listening', onListening);

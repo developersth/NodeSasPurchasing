@@ -50,6 +50,9 @@ module.exports = {
     const id = req.params.id
     const data = req.body
     if (id && data) {
+      if (data.itemPR) {
+        data.itemPR = JSON.parse(data.itemPR)
+      }
       const result = await db.Payment.update(data, { where: { id: id } })
       console.log(result)
       return res.json({ success: true, message: 'Payment Update Successfully ', result })

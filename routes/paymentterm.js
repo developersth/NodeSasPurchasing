@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const freightforworderController = require('../controllers/freightforworder');
+const paymenttermController = require('../controllers/paymentterm');
 
-router.get('/', freightforworderController.index)
-router.post('/', freightforworderController.store)
-router.put('/:id', freightforworderController.update)
-router.delete('/:id', freightforworderController.destroy)
+router.get('/', paymenttermController.index)
+router.post('/', paymenttermController.store)
+router.put('/:id', paymenttermController.update)
+router.delete('/:id', paymenttermController.destroy)
 
 module.exports = router;

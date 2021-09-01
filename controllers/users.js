@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 const { Op } = require("sequelize");
 const { QueryTypes } = require("sequelize");//condition
 const sequelize = db.sequelize;
-const config = require('../config/config.json')
 let userProfile;
 module.exports = {
   index: async (req, res) => {

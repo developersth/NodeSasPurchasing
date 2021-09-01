@@ -5,7 +5,9 @@ const path = require('path');
 const fs = require('fs');
 const fsExtra = require('fs-extra')
 const documentController = require('../controllers/documents');
-const config = require('../config/config.json')
+const env = process.env.NODE_ENV || 'development';
+//const config = require('../config/config.json')
+const config = require(__dirname + '/../config/config.json')[env];
 const fn = require('../plugins/utils');
 fn.createDirectory(config.documents.tempfiles)//create directory
 fn.createDirectory(config.documents.dir)//create directory

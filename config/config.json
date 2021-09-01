@@ -3,28 +3,32 @@
     "username": "ktd",
     "password": "Ln68QL_ViOEJLzdZ",
     "database": "purchasing",
-    "host": "node18933-sastech001.th1.proen.cloud",
-    "dialect": "mysql"
+    "host": "localhost",
+    "dialect": "mysql",
+    "baseURL": "https://localhost:5000/",
+    "documents": {
+      "dir": "uploads/documents/",
+      "tempfiles": "uploads/tempfiles/"
+    }
   },
   "test": {
     "username": "root",
     "password": null,
     "database": "database_test",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "baseURL": "https://sastech001.th1.proen.cloud/"
   },
   "production": {
     "username": "ktd",
     "password": "Ln68QL_ViOEJLzdZ",
     "database": "purchasing",
-    "host": "ktd-dev.ddns.net",
-    "dialect": "mysql"
-  },
-  "documents": {
-    "dir": "uploads/documents/",
-    "tempfiles": "uploads/tempfiles/"
-  },
-  "server": {
-    "baseURL": "https://sastech.herokuapp.com/"
+    "host": "node18933-sastech001.th1.proen.cloud",
+    "dialect": "mysql",    
+    "baseURL": "https://sastech001.th1.proen.cloud/",
+    "documents": {
+      "dir": "uploads/documents/",
+      "tempfiles": "uploads/tempfiles/"
+    }
   }
 }
