@@ -27,13 +27,8 @@ const storage = multer.diskStorage({
     }
 });
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' ||
-        file.mimetype === 'image/png' ||
-        file.mimetype === 'text/plain' ||
-        file.mimetype === 'application/pdf' ||
-        file.mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'||
-        file.mimetype === 'application/msword'||
-        file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    if (file.mimetype === 'image/*' ||
+        file.mimetype === 'application/pdf' ) {
         cb(null, true);
     } else {
         cb(null, false);
@@ -47,5 +42,6 @@ router.get('/pono/:pono', documentController.findDataByPoNo)
 router.post('/', upload.array('files'), documentController.store)
 router.put('/:id', upload.array('files'),documentController.update)
 router.delete('/:id', documentController.destroy)
+router.delete('/delete/item', documentController.destroyItems)
 router.delete('/', documentController.destroyItems)
 module.exports = router;

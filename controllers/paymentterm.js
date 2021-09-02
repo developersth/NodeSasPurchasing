@@ -1,5 +1,5 @@
 const db = require('../models');
-
+const sequelize = db.sequelize;
 module.exports = {
   index: async (req, res) => {
     try {
@@ -13,6 +13,15 @@ module.exports = {
     const data = req.body
     if (data) {
       try {
+        const oldName = await db.PaymentTerm.findOne({
+          where: sequelize.where(
+            sequelize.fn('lower', sequelize.col('name')),
+            sequelize.fn('lower', data.name)
+          )
+        })
+        if (oldName) {
+          return res.status(200).json({ success: false, message: 'Name already exist. Pleasy try again' })
+        }
         const value = await db.sequelize.transaction((t) => {
           return db.PaymentTerm.create(data, { transaction: t })
         })
@@ -28,7 +37,6 @@ module.exports = {
     const data = req.body
     if (id && data) {
       const result = await db.PaymentTerm.update(data, { where: { id: id } })
-      console.log(result)
       return res.json({ success: true, message: 'PaymentTerm Update Successfully ', result })
     }
     return res.status(400).json({ success: false, message: 'Bad request.' })

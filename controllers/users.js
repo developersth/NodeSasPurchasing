@@ -67,12 +67,15 @@ module.exports = {
     ip = ip.replace('::ffff:', '');
     if (!req.body.username || !req.body.password) return res.status(400).send({ success: false, message: 'Invalid Paramiters.' })
     let user = await db.Users.findOne({where: {username: req.body.username} });
-    if (!user) return res.status(400).send({ success: false, message: 'Invalid Username or Password.' })
+    if (!user) return res.status(200).send({ success: false, message: 'Invalid Username or Password.' })
     if (user) {
       const validPassword = await bcrypt.compare(req.body.password, user.password);
       if (!validPassword) return res.status(200).send({ success: false, message: 'Password is wrong.' })
       else {
         let userRole = await db.UserRole.findByPk(user.role_id);
+        let roleName =null
+        if(userRole)
+           roleName =userRole.name
         // Send JWT
         // Create and assign token
         //const signUser = {username:user.username}
@@ -87,7 +90,7 @@ module.exports = {
             name: user.name,
             email: user.email,
             mobile: user.mobile,
-            type: userRole.name,
+            type: roleName,
           }
         };
         userProfile = data.user;

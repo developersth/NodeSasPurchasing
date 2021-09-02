@@ -1,9 +1,10 @@
 const db = require('../models');
-
+const sequelize = db.sequelize;
+const { Op } = require("sequelize");
 module.exports = {
   index: async (req, res) => {
     try {
-      const value = await db.Payment.findAll()
+      const value = await db.Payment.findAll({ order: [['id', 'DESC']] })
       if (value.itemPR)
         value.itemPR = JSON.parse(data.itemPR)
       return res.json(value)
@@ -54,7 +55,6 @@ module.exports = {
         data.itemPR = JSON.parse(data.itemPR)
       }
       const result = await db.Payment.update(data, { where: { id: id } })
-      console.log(result)
       return res.json({ success: true, message: 'Payment Update Successfully ', result })
     }
     return res.status(400).json({ success: false, message: 'Bad request.' })
@@ -67,6 +67,21 @@ module.exports = {
         return res.send({ success: true, message: 'Delete Payment Successfully' });
       } catch (e) {
         return res.status(200).json({ success: false, message: 'Cannot remove data from database.' })
+      }
+    } else {
+      return res.status(400).json({ success: false, message: 'Bad request.' })
+    }
+  },
+  destroyItems: async (req, res) => {
+    const data = req.body
+    if (data) {
+      try {
+        const itemId = []
+        data.forEach(element => {itemId.push(element.id)});
+        const result = await db.Payment.destroy({ where: {id: {[Op.in]: itemId}}})
+        return res.send({ success: true, message: 'Delete Payment Successfully' });
+      } catch (e) {
+        return res.json({ success: false, message: 'Cannot remove data from database.' })
       }
     } else {
       return res.status(400).json({ success: false, message: 'Bad request.' })

@@ -1,5 +1,5 @@
 const db = require('../models');
-
+const sequelize = db.sequelize;
 module.exports = {
   index: async (req, res) => {
     try {
@@ -13,6 +13,15 @@ module.exports = {
     const data = req.body
     if (data) {
       try {
+        const oldName = await db.UserRole.findOne({
+          where: sequelize.where(
+            sequelize.fn('lower', sequelize.col('name')),
+            sequelize.fn('lower', data.name)
+          )
+        })
+        if (oldName) {
+          return res.status(200).json({ success: false, message: 'Name already exist. Pleasy try again' })
+        }
         const value = await db.sequelize.transaction((t) => {
           return db.UserRole.create(data, { transaction: t })
         })

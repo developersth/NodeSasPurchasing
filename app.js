@@ -16,6 +16,8 @@ var userrolesRouter = require('./routes/userroles');
 var paymentsRouter = require('./routes/payments');
 var freightforworderRouter = require('./routes/freightforworder');
 var authRouter = require('./routes/auth');
+var buyersRouter = require('./routes/buyers');
+var deliverytermsRouter = require('./routes/deliveryterms');
 const bodyParser = require('body-parser');
 var app = express();
 // view engine setup
@@ -50,7 +52,9 @@ app.use('/api/supplier', supplierRouter);
 app.use('/api/paymentterm', paymenttermRouter);
 app.use('/api/userroles', userrolesRouter);
 app.use('/api/payments',passport.authenticate('jwt', { session: false }), paymentsRouter);
-app.use('/api/freightforworder',passport.authenticate('jwt', { session: false }), freightforworderRouter);
+app.use('/api/freightforworders', freightforworderRouter);
+app.use('/api/buyers',buyersRouter);
+app.use('/api/deliveryterms',deliverytermsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -7,5 +7,5 @@ router.get('/:id', paymentsController.findById)
 router.post('/', paymentsController.store)
 router.put('/:id', paymentsController.update)
 router.delete('/:id', paymentsController.destroy)
-
+router.delete('/delete/item', paymentsController.destroyItems)
 module.exports = router;
