@@ -220,10 +220,11 @@ module.exports = {
     //let test =req.body.files
 
     //return res.status(200).json({ success: true, message: 'Upload File Successfully' })
+
     if (data) {
       try {
         let DocNo = ''
-        let id = 1
+        let id = 0
 
         if (data.itemPR) {
           data.itemPR = JSON.parse(data.itemPR)
@@ -231,11 +232,15 @@ module.exports = {
         if (data.fileManage) {
           data.fileManage = JSON.parse(data.fileManage)
         }
+        if (data.DeliveryDate) {
+          if (data.DeliveryDate === 'null')
+            data.DeliveryDate = null
+        }
         const body = {
           Status: data.Status,
           PoNo: data.PoNo,
           DocDate: data.DocDate,
-          ProductValue: data.ProductValue,
+          ProductValue: data.ProductValue || 0,
           Currency: data.Currency,
           Buyer: data.Buyer,
           Supplier: data.Supplier,
@@ -250,15 +255,17 @@ module.exports = {
           BillOfLadingNo: data.BillOfLadingNo,
           AirWayBillNo: data.AirWayBillNo,
           TaxInvoiceNo: data.TaxInvoiceNo,
-          TaxValue: data.TaxValue,
+          TaxValue: data.TaxValue || 0,
           FreightInvoiceNo: data.FreightInvoiceNo,
-          FreightInvoiceValue: data.FreightInvoiceValue,
+          FreightInvoiceValue: data.FreightInvoiceValue || 0,
           itemPR: data.itemPR,
           fileManage: data.fileManage
         }
+        console.log(body)
         const docs = await db.sequelize.transaction((t) => {
           return db.Documents.create(body, { transaction: t }).then(result => id = result.id)
         })
+
         DocNo = fn.formatDocNo(id)  //รูปแบบรหัสเอกสาร
         var oldPath = config.documents.tempfiles
         var newPath = config.documents.dir + dateFormat(now, "yyyy") + '/' + dateFormat(now, "mm") + '/' + DocNo + '/'
@@ -359,11 +366,15 @@ module.exports = {
         if (data.fileManage) {
           data.fileManage = JSON.parse(data.fileManage)
         }
+        if (data.DeliveryDate) {
+          if (data.DeliveryDate === 'null')
+            data.DeliveryDate = null
+        }
         const body = {
           Status: data.Status,
           PoNo: data.PoNo,
           DocDate: data.DocDate,
-          ProductValue: data.ProductValue,
+          ProductValue: data.ProductValue || 0,
           Currency: data.Currency,
           Buyer: data.Buyer,
           Supplier: data.Supplier,
@@ -378,9 +389,9 @@ module.exports = {
           BillOfLadingNo: data.BillOfLadingNo,
           AirWayBillNo: data.AirWayBillNo,
           TaxInvoiceNo: data.TaxInvoiceNo,
-          TaxValue: data.TaxValue,
+          TaxValue: data.TaxValue || 0,
           FreightInvoiceNo: data.FreightInvoiceNo,
-          FreightInvoiceValue: data.FreightInvoiceValue,
+          FreightInvoiceValue: data.FreightInvoiceValue || 0,
           itemPR: data.itemPR,
           fileManage: data.fileManage,
           updateBy: data.updateBy,
