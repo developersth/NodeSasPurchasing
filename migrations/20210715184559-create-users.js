@@ -17,7 +17,7 @@ module.exports = {
         field: 'username'
       },
       mobile: {
-        type: Sequelize.STRING(11),
+        type: Sequelize.STRING(15),
         field: 'mobile'
       },
       email: {

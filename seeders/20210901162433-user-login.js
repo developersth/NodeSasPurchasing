@@ -35,7 +35,7 @@ module.exports = {
     },
     {
       username: 'ning',
-      role_id: 2,
+      role_id: 3,
       name:'Suchanya Sripumkai',
       password: passwordHash('1234'),
       mobile:'+66 98820 0799',
