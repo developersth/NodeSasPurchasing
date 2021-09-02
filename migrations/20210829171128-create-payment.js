@@ -34,7 +34,7 @@ module.exports = {
         type: Sequelize.STRING(20)
       },
       PRNo: {
-        type: Sequelize.STRING(20)
+        type: Sequelize.TEXT
       },
       InvoiceNo: {
         type: Sequelize.STRING(20)

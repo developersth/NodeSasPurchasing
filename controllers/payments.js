@@ -77,8 +77,8 @@ module.exports = {
     if (data) {
       try {
         const itemId = []
-        data.forEach(element => {itemId.push(element.id)});
-        const result = await db.Payment.destroy({ where: {id: {[Op.in]: itemId}}})
+        data.forEach(element => { itemId.push(element.id) });
+        const result = await db.Payment.destroy({ where: { id: { [Op.in]: itemId } } })
         return res.send({ success: true, message: 'Delete Payment Successfully' });
       } catch (e) {
         return res.json({ success: false, message: 'Cannot remove data from database.' })
