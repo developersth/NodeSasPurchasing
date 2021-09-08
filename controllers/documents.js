@@ -214,6 +214,70 @@ module.exports = {
       return res.status(500).json({ message: 'Cannot  get data from database.' })
     }
   },
+  findPoNo: async (req, res) => {
+    try {
+      const payname = req.query.payname
+      const result = await db.Documents.findAll({ attributes: ['PoNo', 'Supplier'], where: { [Op.or]: [{ Supplier: payname }, { FreightForworder: payname }] }, order: [['createdAt', 'DESC']] })
+      return res.json(result)
+    } catch (e) {
+      return res.status(500).json({ message: 'Cannot get data from database.' })
+    }
+  },
+  exportExcel: async (req, res) => {
+    try {
+      const data = req.body
+      const itemId = []
+      data.forEach(el => { itemId.push(el.id) });
+      const result = await db.Documents.findAll({ where: { id: { [Op.in]: itemId } } })
+      const body = []
+      if (result) {
+        result.forEach(doc => {
+          if (doc) {
+            let itemPR = JSON.parse(doc.itemPR)
+            itemPR.forEach((item, index) => {
+              let pono
+              if (index !== 0)
+                pono = ''
+              else
+                pono = doc.PoNo
+              body.push({
+                "PO No.": pono,
+                "PR No.": item.PRNo,
+                "Job No.": item.JobNo,
+                FROM: '',
+                Supplier: doc.Supplier,
+                item: index+1,
+                "Delivery Date": doc.DeliveryDate,
+                AWB: doc.AirWayBillNo,
+                Freight:doc.FreightForworder,
+                "เลขที่ใบขน":doc.BillOfLadingNo,
+                Status:doc.Status,
+                "แจ้งรับของ (เรา)":'',
+                "พี่โจ้แจ้งรับ":'',
+                "T/T status":'',
+                "INVOICE NO.":doc.InvoiceNo,
+                "ค่าภาษี":'ทำจ่ายแล้ว',
+                "TAX INV NO.":doc.TaxInvoiceNo,
+                "ค่า Freight":'',
+                "FREIGHT INV NO.":doc.FreightInvoiceNo
+              })
+            });
+          }
+
+
+
+        });
+
+        return res.json(body)
+      } else {
+        return res.status(404).json({ message: 'no data from database.' })
+      }
+
+    } catch (e) {
+      return res.status(500).json({ message: 'Cannot  get data from database.' })
+    }
+  },
+
   store: async (req, res) => {
     const data = req.body
     //data.itemPR=JSON.parse(data.itemPR)

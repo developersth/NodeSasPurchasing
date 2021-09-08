@@ -39,6 +39,7 @@ const upload = multer({ storage: storage, limits: { fieldSize: 1024 * 1024 * 10 
 router.get('/', documentController.index)
 router.get('/:id', documentController.findById)
 router.get('/get/getpono', documentController.findPoNo)
+router.post('/report/exportexcel', documentController.exportExcel)
 router.get('/pono/:pono', documentController.findDataByPoNo)
 router.post('/', upload.array('files'), documentController.store)
 router.put('/:id', upload.array('files'),documentController.update)
