@@ -27,14 +27,15 @@ const storage = multer.diskStorage({
     }
 });
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/*' ||
+    if (file.mimetype === 'image/jpeg' ||
+        file.mimetype === 'image/png' ||
         file.mimetype === 'application/pdf' ) {
         cb(null, true);
     } else {
         cb(null, false);
     }
 };
-const upload = multer({ storage: storage, limits: { fieldSize: 1024 * 1024 * 50 }, fileFilter: fileFilter });
+const upload = multer({ storage: storage, limits: { fieldSize: 1024 * 1024 * 10 }, fileFilter: fileFilter });
 router.get('/', documentController.index)
 router.get('/:id', documentController.findById)
 router.get('/get/getpono', documentController.findPoNo)

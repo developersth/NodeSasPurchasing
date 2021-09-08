@@ -33,13 +33,25 @@ module.exports = {
     return res.status(400).json({ message: 'Bad request.' })
   },
   update: async (req, res) => {
-    const id = req.params.id
-    const data = req.body
-    if (id && data) {
-      const result = await db.Supplier.update(data, { where: { id: id } })
-      return res.json({ success: true, message: 'Supplier Update Successfully ', result })
+    try {
+      const id = req.params.id
+      const data = req.body
+      console.log(data.id)
+      if (id && data) {
+        const body={
+          name:data.name,
+          status:data.status,
+          updatedAt:new Date()
+        }
+        const result = await db.Supplier.update(body, { where: { id: id } })
+        return res.json({ success: true, message: 'Supplier Update Successfully ', result })
+      } else {
+        return res.status(400).json({ success: false, message: 'Bad request.' })
+      }
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message })
     }
-    return res.status(400).json({ success: false, message: 'Bad request.' })
+
   },
   destroy: async (req, res) => {
     const id = req.params.id

@@ -261,7 +261,6 @@ module.exports = {
           itemPR: data.itemPR,
           fileManage: data.fileManage
         }
-        console.log(body)
         const docs = await db.sequelize.transaction((t) => {
           return db.Documents.create(body, { transaction: t }).then(result => id = result.id)
         })

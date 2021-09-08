@@ -8,7 +8,7 @@ let userProfile;
 module.exports = {
   index: async (req, res) => {
     try {
-      let sql =`select
+      let sql = `select
                   users.id,
                   role_id,
                   u.name  as role_name,
@@ -60,26 +60,45 @@ module.exports = {
       return res.status(500).json({ message: 'Cannot get data from database.' })
     }
   },
+  findById: async (req, res) => {
+    try {
+      const id = req.params.id
+      const response = await db.Users.findByPk(id)
+      const userRole = await db.UserRole.findByPk(response.role_id)
+      const user = {
+        id: response.id,
+        username: response.username,
+        name: response.name,
+        email: response.email,
+        mobile: response.mobile,
+        role_id: response.role_id,
+        role_name: userRole.name,
+      }
+      return res.json(user)
+    } catch (e) {
+      return res.status(500).json({ message: 'Cannot get data from database.' })
+    }
+  },
   login: async (req, res) => {
     //const data = req.body;
     // query db.
     let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
     ip = ip.replace('::ffff:', '');
     if (!req.body.username || !req.body.password) return res.status(400).send({ success: false, message: 'Invalid Paramiters.' })
-    let user = await db.Users.findOne({where: {username: req.body.username} });
+    let user = await db.Users.findOne({ where: { username: req.body.username } });
     if (!user) return res.status(200).send({ success: false, message: 'Invalid Username or Password.' })
     if (user) {
       const validPassword = await bcrypt.compare(req.body.password, user.password);
       if (!validPassword) return res.status(200).send({ success: false, message: 'Password is wrong.' })
       else {
         let userRole = await db.UserRole.findByPk(user.role_id);
-        let roleName =null
-        if(userRole)
-           roleName =userRole.name
+        let roleName = null
+        if (userRole)
+          roleName = userRole.name
         // Send JWT
         // Create and assign token
         //const signUser = {username:user.username}
-        const token = jwt.sign(req.body, 'your_jwt_secret',{expiresIn:'4h'});
+        const token = jwt.sign(req.body, 'your_jwt_secret', { expiresIn: '4h' });
         const data = {
           success: true,
           message: "Login Succesfully",
@@ -111,7 +130,7 @@ module.exports = {
     if (data) {
       try {
         const oldUser = await db.Users.findOne({ where: { username: data.username } })
-        if(oldUser){
+        if (oldUser) {
           return res.status(200).json({ success: false, message: 'User already exist. Pleasy try again' })
         }
 
@@ -131,10 +150,11 @@ module.exports = {
     const id = req.params.id
     const data = req.body
     if (id && data) {
-      const passwordHash = bcrypt.hashSync(data.password, 10);
-      data.password = passwordHash
+      if(data.password){
+        const passwordHash = bcrypt.hashSync(data.password, 10);
+        data.password = passwordHash
+      }
       const result = await db.Users.update(data, { where: { id: id } })
-      console.log(result)
       return res.json({ success: true, message: 'User Update Successfully ', result })
     }
     return res.status(400).json({ success: false, message: 'Bad request.' })
