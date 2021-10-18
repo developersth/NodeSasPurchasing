@@ -23,7 +23,7 @@
     "username": "ktd",
     "password": "Ln68QL_ViOEJLzdZ",
     "database": "purchasing",
-    "host": "node18933-sastech001.th1.proen.cloud",
+    "host": "node21725-ginnovation.th1.proen.cloud",
     "dialect": "mysql",    
     "baseURL": "https://ginnovation.th1.proen.cloud/",
     "documents": {
