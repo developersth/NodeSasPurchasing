@@ -17,7 +17,7 @@
     "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "baseURL": "https://sastech001.th1.proen.cloud/"
+    "baseURL": "https://ginnovation.th1.proen.cloud/"
   },
   "production": {
     "username": "ktd",
@@ -25,7 +25,7 @@
     "database": "purchasing",
     "host": "node18933-sastech001.th1.proen.cloud",
     "dialect": "mysql",    
-    "baseURL": "https://sastech001.th1.proen.cloud/",
+    "baseURL": "https://ginnovation.th1.proen.cloud/",
     "documents": {
       "dir": "uploads/documents/",
       "tempfiles": "uploads/tempfiles/"
