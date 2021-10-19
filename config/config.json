@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "ktd",
-    "password": "Ln68QL_ViOEJLzdZ",
-    "database": "purchasing",
-    "host": "localhost",
+    "username": "h0ap0p29f5eyzkgs",
+    "password": "k3a9ej90bsh9wiab",
+    "database": "tugrcqkdcc2qqqzi",
+    "host": "x8autxobia7sgh74.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "dialect": "mysql",
     "baseURL": "http://localhost:5000/",
     "documents": {
@@ -20,12 +20,12 @@
     "baseURL": "https://ginnovation.th1.proen.cloud/"
   },
   "production": {
-    "username": "ktd",
-    "password": "Ln68QL_ViOEJLzdZ",
-    "database": "purchasing",
-    "host": "node21725-ginnovation.th1.proen.cloud",
+    "username": "h0ap0p29f5eyzkgs",
+    "password": "k3a9ej90bsh9wiab",
+    "database": "tugrcqkdcc2qqqzi",
+    "host": "x8autxobia7sgh74.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "dialect": "mysql",    
-    "baseURL": "https://ginnovation.th1.proen.cloud/",
+    "baseURL": "https://sastech.herokuapp.com/",
     "documents": {
       "dir": "uploads/documents/",
       "tempfiles": "uploads/tempfiles/"
