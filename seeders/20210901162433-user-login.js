@@ -14,7 +14,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    return await queryInterface.bulkInsert('Users', [{
+    return await queryInterface.bulkInsert('users', [{
       username: 'admin',
       role_id: 1,
       name:'Administrator',
@@ -53,6 +53,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    return await queryInterface.bulkDelete('Users', null, {});
+    return await queryInterface.bulkDelete('users', null, {});
   }
 };

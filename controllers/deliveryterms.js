@@ -3,7 +3,7 @@ const sequelize = db.sequelize;
 module.exports = {
   index: async (req, res) => {
     try {
-      const value = await db.DeliveryTerm.findAll()
+      const value = await db.delivery_term.findAll()
       return res.json(value)
     } catch (e) {
       return res.status(500).json({ message: 'Cannot get data from database.' })

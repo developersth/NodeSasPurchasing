@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Documents', {
+    await queryInterface.createTable('po_management', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -17,7 +17,7 @@ module.exports = {
       },
       Status: {
         type: Sequelize.STRING(50),
-        defaultValue:'Incomplete'
+        defaultValue:'Active'
       },
       PoNo: {
         type: Sequelize.STRING(20)
@@ -153,6 +153,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Documents');
+    await queryInterface.dropTable('po_management');
   }
 };

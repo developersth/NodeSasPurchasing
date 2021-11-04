@@ -36,7 +36,7 @@ module.exports = {
   },
   findNameUsers: async (req, res) => {
     try {
-      const user = await db.Users.findAll({
+      const user = await db.users.findAll({
         attributes: ['name']
       })
       return res.json(user)
@@ -63,8 +63,8 @@ module.exports = {
   findById: async (req, res) => {
     try {
       const id = req.params.id
-      const response = await db.Users.findByPk(id)
-      const userRole = await db.UserRole.findByPk(response.role_id)
+      const response = await db.users.findByPk(id)
+      const userRole = await db.user_roles.findByPk(response.role_id)
       const user = {
         id: response.id,
         username: response.username,
@@ -85,13 +85,13 @@ module.exports = {
     let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
     ip = ip.replace('::ffff:', '');
     if (!req.body.username || !req.body.password) return res.status(400).send({ success: false, message: 'Invalid Paramiters.' })
-    let user = await db.Users.findOne({ where: { username: req.body.username } });
+    let user = await db.users.findOne({ where: { username: req.body.username } });
     if (!user) return res.status(200).send({ success: false, message: 'Invalid Username or Password.' })
     if (user) {
       const validPassword = await bcrypt.compare(req.body.password, user.password);
       if (!validPassword) return res.status(200).send({ success: false, message: 'Password is wrong.' })
       else {
-        let userRole = await db.UserRole.findByPk(user.role_id);
+        let userRole = await db.user_roles.findByPk(user.role_id);
         let roleName = null
         if (userRole)
           roleName = userRole.name
@@ -113,7 +113,7 @@ module.exports = {
           }
         };
         userProfile = data.user;
-        await db.Users.update({ ip: ip, token: token, last_login: new Date() }, { where: { id: user.id } })
+        await db.users.update({ ip: ip, token: token, last_login: new Date() }, { where: { id: user.id } })
         return res.json(data)
       }
 
@@ -129,7 +129,7 @@ module.exports = {
     const data = req.body
     if (data) {
       try {
-        const oldUser = await db.Users.findOne({ where: { username: data.username } })
+        const oldUser = await db.users.findOne({ where: { username: data.username } })
         if (oldUser) {
           return res.status(200).json({ success: false, message: 'User already exist. Pleasy try again' })
         }
@@ -137,7 +137,7 @@ module.exports = {
         const passwordHash = bcrypt.hashSync(data.password, 10);
         data.password = passwordHash
         const users = await db.sequelize.transaction((t) => {
-          return db.Users.create(data, { transaction: t })
+          return db.users.create(data, { transaction: t })
         })
         return res.status(201).json({ success: true, message: 'User Created Successfully', users })
       } catch (e) {
@@ -154,7 +154,7 @@ module.exports = {
         const passwordHash = bcrypt.hashSync(data.password, 10);
         data.password = passwordHash
       }
-      const result = await db.Users.update(data, { where: { id: id } })
+      const result = await db.users.update(data, { where: { id: id } })
       return res.json({ success: true, message: 'User Update Successfully ', result })
     }
     return res.status(400).json({ success: false, message: 'Bad request.' })
@@ -163,7 +163,7 @@ module.exports = {
     const id = req.params.id
     if (id) {
       try {
-        await db.Users.destroy({ where: { id } })
+        await db.users.destroy({ where: { id } })
         return res.send({ success: true, message: 'Delete User Successfully' });
       } catch (e) {
         return res.status(500).json({ success: false, message: 'Cannot remove data from database.' })

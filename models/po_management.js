@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Documents extends Model {
+  class po_management extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  Documents.init({
+  po_management.init({
     DocNo: DataTypes.STRING,
     DocDate: DataTypes.DATE,
     Status: DataTypes.STRING,
@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
     DocPath: DataTypes.STRING,
   }, {
     sequelize,
-    modelName: 'Documents',
+    modelName: 'po_management',
   });
-  return Documents;
+  return po_management;
 };

@@ -8,7 +8,7 @@ var logger = require('morgan');
 const passport = require('./config/passport');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var documentsRouter = require('./routes/documents');
+var PoManagementRouter = require('./routes/PoManagement');
 var uploadRouter = require('./routes/upload');
 var supplierRouter = require('./routes/supplier');
 var paymenttermRouter = require('./routes/paymentterm');
@@ -46,15 +46,15 @@ app.use('/', indexRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 //app.use('/api/users', usersRouter);
-app.use('/api/documents', documentsRouter);
+app.use('/api/po_management', PoManagementRouter);
 app.use('/upload', uploadRouter);
 app.use('/api/supplier', supplierRouter);
-app.use('/api/paymentterm', paymenttermRouter);
-app.use('/api/userroles', userrolesRouter);
+app.use('/api/payment_term', paymenttermRouter);
+app.use('/api/user_roles', userrolesRouter);
 app.use('/api/payments',passport.authenticate('jwt', { session: false }), paymentsRouter);
-app.use('/api/freightforworders', freightforworderRouter);
+app.use('/api/freight_forworders', freightforworderRouter);
 app.use('/api/buyers',buyersRouter);
-app.use('/api/deliveryterms',deliverytermsRouter);
+app.use('/api/delivery_terms',deliverytermsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

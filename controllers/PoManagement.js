@@ -10,7 +10,7 @@ const { Op } = require("sequelize");
 module.exports = {
   index: async (req, res) => {
     try {
-      const docs = await db.Documents.findAll({ order: [['id', 'DESC']] })
+      const docs = await db.PoManagement.findAll({ order: [['id', 'DESC']] })
       const result = docs.map((doc) => {
         if (doc.PoFile)
           doc.PoFile = config.baseURL + doc.PoFile
@@ -96,7 +96,7 @@ module.exports = {
   findById: async (req, res) => {
     try {
       const id = req.params.id
-      const doc = await db.Documents.findByPk(id)
+      const doc = await db.PoManagement.findByPk(id)
       if (doc) {
         if (doc.PoFile)
           doc.PoFile = config.baseURL + doc.PoFile
@@ -185,7 +185,7 @@ module.exports = {
   findPoNo: async (req, res) => {
     try {
       const payname = req.query.payname
-      const result = await db.Documents.findAll({ attributes: ['PoNo', 'Supplier'], where: { [Op.or]: [{ Supplier: payname }, { FreightForworder: payname }] }, order: [['createdAt', 'DESC']] })
+      const result = await db.PoManagement.findAll({ attributes: ['PoNo', 'Supplier'], where: { [Op.or]: [{ Supplier: payname }, { FreightForworder: payname }] }, order: [['createdAt', 'DESC']] })
       return res.json(result)
     } catch (e) {
       return res.status(500).json({ message: 'Cannot get data from database.' })
@@ -194,7 +194,7 @@ module.exports = {
   findDataByPoNo: async (req, res) => {
     try {
       const pono = req.params.pono
-      const result = await db.Documents.findOne({ where: { PoNo: pono } })
+      const result = await db.PoManagement.findOne({ where: { PoNo: pono } })
       if (result) {
         if (result.itemPR)
           result.itemPR = JSON.parse(result.itemPR)
@@ -217,7 +217,7 @@ module.exports = {
   findPoNo: async (req, res) => {
     try {
       const payname = req.query.payname
-      const result = await db.Documents.findAll({ attributes: ['PoNo', 'Supplier'], where: { [Op.or]: [{ Supplier: payname }, { FreightForworder: payname }] }, order: [['createdAt', 'DESC']] })
+      const result = await db.PoManagement.findAll({ attributes: ['PoNo', 'Supplier'], where: { [Op.or]: [{ Supplier: payname }, { FreightForworder: payname }] }, order: [['createdAt', 'DESC']] })
       return res.json(result)
     } catch (e) {
       return res.status(500).json({ message: 'Cannot get data from database.' })
@@ -228,7 +228,7 @@ module.exports = {
       const data = req.body
       const itemId = []
       data.forEach(el => { itemId.push(el.id) });
-      const result = await db.Documents.findAll({ where: { id: { [Op.in]: itemId } } })
+      const result = await db.PoManagement.findAll({ where: { id: { [Op.in]: itemId } } })
       const body = []
       if (result) {
         result.forEach(doc => {
@@ -326,7 +326,7 @@ module.exports = {
           fileManage: data.fileManage
         }
         const docs = await db.sequelize.transaction((t) => {
-          return db.Documents.create(body, { transaction: t }).then(result => id = result.id)
+          return db.PoManagement.create(body, { transaction: t }).then(result => id = result.id)
         })
 
         DocNo = fn.formatDocNo(id)  //รูปแบบรหัสเอกสาร
@@ -407,8 +407,8 @@ module.exports = {
           TaxInvoiceFileName: data.TaxInvoiceFileName,
           TaxInvoiceFile: data.TaxInvoiceFile,
         }
-        await db.Documents.update(docfile, { where: { id: id } }) //update DocNo.
-        return res.status(201).json({ success: true, message: 'Documents Created Successfully', docs })
+        await db.PoManagement.update(docfile, { where: { id: id } }) //update DocNo.
+        return res.status(201).json({ success: true, message: 'PoManagement Created Successfully', docs })
       } catch (e) {
         return res.json({ success: false, message: 'Cannot store data to database.' })
       }
@@ -545,8 +545,8 @@ module.exports = {
           TaxInvoiceFileName: data.TaxInvoiceFileName,
           TaxInvoiceFile: data.TaxInvoiceFile,
         }
-        await db.Documents.update(docfile, { where: { id: id } }) //update DocFile.
-        return res.status(200).json({ success: true, message: 'Documents Update Successfully', docs })
+        await db.PoManagement.update(docfile, { where: { id: id } }) //update DocFile.
+        return res.status(200).json({ success: true, message: 'PoManagement Update Successfully', docs })
       } catch (e) {
         return res.json({ success: false, message: 'Cannot store data to database.' })
       }
@@ -557,13 +557,13 @@ module.exports = {
     const id = req.params.id
     if (id) {
       try {
-        const result = await db.Documents.findByPk(id);
+        const result = await db.PoManagement.findByPk(id);
         var dir = ''
         if (result)
           dir = `${result.DocPath}`
-        const doc = await db.Documents.destroy({ where: { id } })
+        const doc = await db.PoManagement.destroy({ where: { id } })
         try { if (doc) { fs.rmdirSync(dir, { recursive: true }) } } catch (err) { if (!err) console.log('delete images file ' + imagePath) }
-        return res.send({ success: true, message: 'Delete Documents Successfully' });
+        return res.send({ success: true, message: 'Delete PoManagement Successfully' });
       } catch (e) {
         return res.json({ success: false, message: 'Cannot remove data from database.' })
       }
@@ -578,14 +578,14 @@ module.exports = {
         const itemId = []
         data.forEach(element => { itemId.push(element.id) });
         //console.log(itemId.join())
-        const result = await db.Documents.findAll({ where: { id: { [Op.in]: itemId } } });
+        const result = await db.PoManagement.findAll({ where: { id: { [Op.in]: itemId } } });
         const dir = []
         if (result) {
           for (const key in result) {
             dir.push(result[key].DocPath)
           }
         }
-        const doc = await db.Documents.destroy({ where: { id: { [Op.in]: itemId } } })
+        const doc = await db.PoManagement.destroy({ where: { id: { [Op.in]: itemId } } })
         try {
           if (doc) {
             for (const path of dir) {
@@ -595,7 +595,7 @@ module.exports = {
         } catch (err) {
           if (!err) console.log('delete images file ' + imagePath)
         }
-        return res.send({ success: true, message: 'Delete Documents Successfully' });
+        return res.send({ success: true, message: 'Delete PoManagement Successfully' });
       } catch (e) {
         return res.json({ success: false, message: 'Cannot remove data from database.' })
       }

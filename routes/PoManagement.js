@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const fsExtra = require('fs-extra')
-const documentController = require('../controllers/documents');
+const PoManagementController = require('../controllers/PoManagement');
 const env = process.env.NODE_ENV || 'development';
 //const config = require('../config/config.json')
 const config = require(__dirname + '/../config/config.json')[env];
@@ -36,14 +36,14 @@ const fileFilter = (req, file, cb) => {
     }
 };
 const upload = multer({ storage: storage, limits: { fieldSize: 1024 * 1024 * 10 }, fileFilter: fileFilter });
-router.get('/', documentController.index)
-router.get('/:id', documentController.findById)
-router.get('/get/getpono', documentController.findPoNo)
-router.post('/report/exportexcel', documentController.exportExcel)
-router.get('/pono/:pono', documentController.findDataByPoNo)
-router.post('/', upload.array('files'), documentController.store)
-router.put('/:id', upload.array('files'),documentController.update)
-router.delete('/:id', documentController.destroy)
-router.delete('/delete/item', documentController.destroyItems)
-router.delete('/', documentController.destroyItems)
+router.get('/', PoManagementController.index)
+router.get('/:id', PoManagementController.findById)
+router.get('/get/getpono', PoManagementController.findPoNo)
+router.post('/report/exportexcel', PoManagementController.exportExcel)
+router.get('/pono/:pono', PoManagementController.findDataByPoNo)
+router.post('/', upload.array('files'), PoManagementController.store)
+router.put('/:id', upload.array('files'),PoManagementController.update)
+router.delete('/:id', PoManagementController.destroy)
+router.delete('/delete/item', PoManagementController.destroyItems)
+router.delete('/', PoManagementController.destroyItems)
 module.exports = router;

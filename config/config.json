@@ -1,11 +1,11 @@
 {
   "development": {
-    "username": "h0ap0p29f5eyzkgs",
-    "password": "k3a9ej90bsh9wiab",
-    "database": "tugrcqkdcc2qqqzi",
-    "host": "x8autxobia7sgh74.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    "username": "root",
+    "password": null,
+    "database": "purchasing",
+    "host": "127.0.0.1",
     "dialect": "mysql",
-    "baseURL": "http://localhost:5000/",
+    "baseURL": "http://dev-ktd.ddns.net:5000/",
     "documents": {
       "dir": "uploads/documents/",
       "tempfiles": "uploads/tempfiles/"
