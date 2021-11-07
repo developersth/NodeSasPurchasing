@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const buyersController = require('../controllers/buyers');
+const buyersController = require('../controllers/BuyerController');
 
 router.get('/', buyersController.index)
 router.post('/', buyersController.store)

@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/users');
+const userController = require('../controllers/UserController');
 const passport = require('../config/passport');
 
 router.get('/', passport.authenticate('jwt', { session: false }), userController.index)
 router.get('/getNameUsers', userController.findNameUsers)
 router.get('/me',passport.authenticate('jwt', { session: false }), userController.me)
+//router.get('/me', userController.me)
 router.get('/:id',passport.authenticate('jwt', { session: false }), userController.findById)
 router.post('/', userController.store)
 router.post('/login', userController.login)

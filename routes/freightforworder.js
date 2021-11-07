@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const freightforworderController = require('../controllers/freightforworder');
+const freightforworderController = require('../controllers/FreightForworderController');
 
 router.get('/', freightforworderController.index)
 router.post('/', freightforworderController.store)

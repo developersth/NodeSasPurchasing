@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('po_management', {
+    await queryInterface.createTable('po_managements', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -17,7 +17,7 @@ module.exports = {
       },
       Status: {
         type: Sequelize.STRING(50),
-        defaultValue:'Active'
+        defaultValue: 'S10'
       },
       PoNo: {
         type: Sequelize.STRING(20)
@@ -32,7 +32,7 @@ module.exports = {
         type: Sequelize.JSON
       },
       ProductValue: {
-        type: Sequelize.DECIMAL(15,2)
+        type: Sequelize.DECIMAL(15, 2)
       },
       Currency: {
         type: Sequelize.STRING(10)
@@ -113,7 +113,7 @@ module.exports = {
         type: Sequelize.STRING(200)
       },
       TaxValue: {
-        type: Sequelize.DECIMAL(15,2)
+        type: Sequelize.DECIMAL(15, 2)
       },
       FreightInvoiceNo: {
         type: Sequelize.STRING(50)
@@ -125,7 +125,7 @@ module.exports = {
         type: Sequelize.STRING(200)
       },
       FreightInvoiceValue: {
-        type: Sequelize.DECIMAL(15,2)
+        type: Sequelize.DECIMAL(15, 2)
       },
       DeliveryNoticeFile: {
         type: Sequelize.STRING(200)
@@ -135,6 +135,9 @@ module.exports = {
       },
       DocPath: {
         type: Sequelize.STRING(150)
+      },
+      itemImport: {
+        type: Sequelize.JSON
       },
       createBy: {
         type: Sequelize.STRING(60)
@@ -153,6 +156,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('po_management');
+    await queryInterface.dropTable('po_managements');
   }
 };

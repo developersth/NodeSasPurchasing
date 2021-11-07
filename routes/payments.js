@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const paymentsController = require('../controllers/payments');
+const paymentsController = require('../controllers/PaymentController');
 
 router.get('/', paymentsController.index)
 router.get('/:id', paymentsController.findById)

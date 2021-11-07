@@ -23,6 +23,9 @@ module.exports = {
       Description: {
         type: Sequelize.STRING
       },
+      Color: {
+        type: Sequelize.STRING(50)
+      },
       UpdateBy: {
         type: Sequelize.STRING
       },

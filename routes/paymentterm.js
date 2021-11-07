@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const paymenttermController = require('../controllers/paymentterm');
+const paymenttermController = require('../controllers/PaymentTermController');
 
 router.get('/', paymenttermController.index)
 router.post('/', paymenttermController.store)

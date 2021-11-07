@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const userrolesController = require('../controllers/userroles');
+const userrolesController = require('../controllers/UserRoleConntroller');
 
 router.get('/', userrolesController.index)
 router.post('/', userrolesController.store)

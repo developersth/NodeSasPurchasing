@@ -26,7 +26,7 @@ module.exports = {
                   users.updatedAt
                 from
                   users
-                  left join userroles u
+                  left join user_roles u
                   on users.role_id  = u.id`
       const result = await sequelize.query(sql, { type: QueryTypes.SELECT });
       return res.json(result)
@@ -46,6 +46,7 @@ module.exports = {
   },
   me: async (req, res) => {
     try {
+      console.log("Me")
       return res.status(200).json({
         user: {
           id: userProfile.id,
@@ -114,7 +115,7 @@ module.exports = {
         };
         userProfile = data.user;
         await db.users.update({ ip: ip, token: token, last_login: new Date() }, { where: { id: user.id } })
-        return res.json(data)
+        return res.status(200).json(data)
       }
 
     } else {

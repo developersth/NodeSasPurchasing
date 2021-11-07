@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const deliverytermsController = require('../controllers/deliveryterms');
+const deliverytermsController = require('../controllers/DeliveryTermConntroller');
 
 router.get('/', deliverytermsController.index)
 router.post('/', deliverytermsController.store)

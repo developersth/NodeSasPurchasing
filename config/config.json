@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "purchasing",
+    "database": "procurement",
     "host": "127.0.0.1",
     "dialect": "mysql",
     "baseURL": "http://dev-ktd.ddns.net:5000/",
