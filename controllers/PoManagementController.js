@@ -38,23 +38,7 @@ module.exports = {
                     InvoiceFile,
                     PackingListNo,
                     PackingListFileName,
-                    PackingListFile,
-                    FreightForworder,
-                    BillOfLadingNo,
-                    BillOfLadingFileName,
-                    BillOfLadingFile,
-                    AirWayBillNo,
-                    AirWayBillFileName,
-                    AirWayBillFile,
-                    TaxInvoiceNo,
-                    TaxInvoiceFileName,
-                    TaxInvoiceFile,
-                    TaxValue,
-                    FreightInvoiceNo,
-                    FreightInvoiceFileName,
-                    FreightInvoiceFile,
-                    FreightInvoiceValue,
-                    DeliveryNoticeFile,
+                    PackingListFile,            
                     fileManage,
                     DocPath,
                     itemImport,
@@ -68,7 +52,8 @@ module.exports = {
                     pm.Status = sd.StatusVarchar
                   where
                     sd.Name = 'PO_MANAGEMENT'
-                    and sd.ColumnName = 'P_STATUS' `
+                    and sd.ColumnName = 'P_STATUS' 
+                    ORDER BY pm.DocNo DESC`
       const docs = await sequelize.query(sql, { type: Op.SELECT });
       const result = docs[0].map((doc) => {
         if (doc.PoFile)
@@ -99,6 +84,14 @@ module.exports = {
         }
         if (doc.fileManage) {
           doc.fileManage = JSON.parse(doc.fileManage)
+        }
+        if (doc.itemImport) {
+          doc.itemImport = JSON.parse(doc.itemImport)
+          for (const key in doc.itemImport) {
+            if (doc.itemImport[key].BillOfLadingFile) {
+              doc.itemImport[key].BillOfLadingFile = config.baseURL + doc.DocPath + doc.itemImport[key].BillOfLadingFileName
+            }
+          }
         }
         return {
           id: doc.id,
@@ -148,6 +141,7 @@ module.exports = {
           updateBy: doc.updateBy,
           DocPath: doc.DocPath,
           fileManage: doc.fileManage,
+          itemImport: doc.itemImport,
           createdAt: doc.createdAt,
           updatedAt: doc.updatedAt,
         }
@@ -191,6 +185,14 @@ module.exports = {
         if (doc.fileManage) {
           doc.fileManage = JSON.parse(doc.fileManage)
         }
+        if (doc.itemImport) {
+          doc.itemImport = JSON.parse(doc.itemImport)
+          for (const key in doc.itemImport) {
+            if (doc.itemImport[key].BillOfLadingFile) {
+              doc.itemImport[key].BillOfLadingFile = config.baseURL + doc.DocPath + doc.itemImport[key].BillOfLadingFileName
+            }
+          }
+        }
         const result = {
           id: doc.id,
           DocNo: doc.DocNo,
@@ -217,26 +219,11 @@ module.exports = {
           PackingListNo: doc.PackingListNo,
           PackingListFileName: doc.PackingListFileName,
           PackingListFile: doc.PackingListFile,
-          FreightForworder: doc.FreightForworder,
-          BillOfLadingNo: doc.BillOfLadingNo,
-          BillOfLadingFileName: doc.BillOfLadingFileName,
-          BillOfLadingFile: doc.BillOfLadingFile,
-          AirWayBillNo: doc.AirWayBillNo,
-          AirWayBillFileName: doc.AirWayBillFileName,
-          AirWayBillFile: doc.AirWayBillFile,
-          TaxInvoiceNo: doc.TaxInvoiceNo,
-          TaxInvoiceFileName: doc.TaxInvoiceFileName,
-          TaxInvoiceFile: doc.TaxInvoiceFile,
-          TaxValue: doc.TaxValue,
-          FreightInvoiceNo: doc.FreightInvoiceNo,
-          FreightInvoiceFileName: doc.FreightInvoiceFileName,
-          FreightInvoiceFile: doc.FreightInvoiceFile,
-          FreightInvoiceValue: doc.FreightInvoiceValue,
-          DeliveryNoticeFile: doc.DeliveryNoticeFile,
           createBy: doc.createBy,
           updateBy: doc.updateBy,
           DocPath: doc.DocPath,
           fileManage: doc.fileManage,
+          itemImport: doc.itemImport,
           createdAt: doc.createdAt,
           updatedAt: doc.updatedAt,
         }
@@ -362,6 +349,9 @@ module.exports = {
         if (data.fileManage) {
           data.fileManage = JSON.parse(data.fileManage)
         }
+        if (data.itemImport) {
+          data.itemImport = JSON.parse(data.itemImport)
+        }
         if (data.DeliveryDate) {
           if (data.DeliveryDate === 'null')
             data.DeliveryDate = null
@@ -381,15 +371,9 @@ module.exports = {
           DeliveryDate: data.DeliveryDate,
           InvoiceNo: data.InvoiceNo,
           PackingListNo: data.PackingListNo,
-          FreightForworder: data.FreightForworder,
-          BillOfLadingNo: data.BillOfLadingNo,
-          AirWayBillNo: data.AirWayBillNo,
-          TaxInvoiceNo: data.TaxInvoiceNo,
-          TaxValue: data.TaxValue || 0,
-          FreightInvoiceNo: data.FreightInvoiceNo,
-          FreightInvoiceValue: data.FreightInvoiceValue || 0,
           itemPR: data.itemPR,
-          fileManage: data.fileManage
+          fileManage: data.fileManage,
+          itemImport:data.itemImport
         }
         const docs = await db.sequelize.transaction((t) => {
           return db.po_managements.create(body, { transaction: t }).then(result => id = result.id)
@@ -429,26 +413,7 @@ module.exports = {
               data.PackingListFileName = data.fileManage[key].filename
               data.PackingListFile = newPath + data.fileManage[key].filename
             }
-            if (data.fileManage[key].name === 'BillOfLadingFile') {
-              data.BillOfLadingFileName = data.fileManage[key].filename
-              data.BillOfLadingFile = newPath + data.fileManage[key].filename
-            }
-            if (data.fileManage[key].name === 'AirWayBillFile') {
-              data.AirWayBillFileName = data.fileManage[key].filename
-              data.AirWayBillFile = newPath + data.fileManage[key].filename
-            }
-            if (data.fileManage[key].name === 'FreightInvoiceFile') {
-              data.FreightInvoiceFileName = data.fileManage[key].filename
-              data.FreightInvoiceFile = newPath + data.fileManage[key].filename
-            }
-            if (data.fileManage[key].name === 'DeliveryNoticeFile') {
-              data.DeliveryNoticeFileName = data.fileManage[key].filename
-              data.DeliveryNoticeFile = newPath + data.fileManage[key].filename
-            }
-            if (data.fileManage[key].name === 'TaxInvoiceFile') {
-              data.TaxInvoiceFileName = data.fileManage[key].filename
-              data.TaxInvoiceFile = newPath + data.fileManage[key].filename
-            }
+
           }
         }
         const docfile = {
@@ -461,17 +426,7 @@ module.exports = {
           InvoiceFileName: data.InvoiceFileName,
           InvoiceFile: data.InvoiceFile,
           PackingListFileName: data.PackingListFileName,
-          PackingListFile: data.PackingListFile,
-          BillOfLadingFileName: data.BillOfLadingFileName,
-          BillOfLadingFile: data.BillOfLadingFile,
-          AirWayBillFileName: data.AirWayBillFileName,
-          AirWayBillFile: data.AirWayBillFile,
-          FreightInvoiceFileName: data.FreightInvoiceFileName,
-          FreightInvoiceFile: data.FreightInvoiceFile,
-          DeliveryNoticeFileName: data.DeliveryNoticeFileName,
-          DeliveryNoticeFile: data.DeliveryNoticeFile,
-          TaxInvoiceFileName: data.TaxInvoiceFileName,
-          TaxInvoiceFile: data.TaxInvoiceFile,
+          PackingListFile: data.PackingListFile
         }
         await db.po_managements.update(docfile, { where: { id: id } }) //update DocNo.
         return res.status(201).json({ success: true, message: 'po_managements Created Successfully', docs })
