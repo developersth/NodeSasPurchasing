@@ -75,18 +75,18 @@ module.exports = {
         if (doc.FreightInvoiceFile)
           doc.FreightInvoiceFile = config.baseURL + doc.FreightInvoiceFile
         if (doc.itemPR) {
-          doc.itemPR = JSON.parse(doc.itemPR)
+          doc.itemPR = JSON.parse(JSON.stringify(doc.itemPR))
           for (const key in doc.itemPR) {
+            doc.itemPR[key].PRFile = config.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
             if (doc.itemPR[key].PRFileName) {
-              doc.itemPR[key].PRFile = config.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
             }
           }
         }
         if (doc.fileManage) {
-          doc.fileManage = JSON.parse(doc.fileManage)
+          doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
         }
         if (doc.itemImport) {
-          doc.itemImport = JSON.parse(doc.itemImport)
+          doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))
           for (const key in doc.itemImport) {
             if (doc.itemImport[key].BillOfLadingFile) {
               doc.itemImport[key].BillOfLadingFile = config.baseURL + doc.DocPath + doc.itemImport[key].BillOfLadingFileName
@@ -99,7 +99,7 @@ module.exports = {
           DocDate: doc.DocDate,
           Status: doc.Status,
           StatusName: doc.StatusName,
-          Color:doc.Color,
+          Color: doc.Color,
           PoNo: doc.PoNo,
           PoFileName: doc.PoFileName,
           PoFile: doc.PoFile,
@@ -174,25 +174,25 @@ module.exports = {
           doc.DeliveryNoticeFile = config.baseURL + doc.DeliveryNoticeFile
         if (doc.FreightInvoiceFile)
           doc.FreightInvoiceFile = config.baseURL + doc.FreightInvoiceFile
-        if (doc.itemPR) {
-          doc.itemPR = JSON.parse(doc.itemPR)
-          for (const key in doc.itemPR) {
-            if (doc.itemPR[key].PRFileName) {
+          if (doc.itemPR) {
+            doc.itemPR = JSON.parse(JSON.stringify(doc.itemPR))
+            for (const key in doc.itemPR) {
               doc.itemPR[key].PRFile = config.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
+              if (doc.itemPR[key].PRFileName) {
+              }
             }
           }
-        }
-        if (doc.fileManage) {
-          doc.fileManage = JSON.parse(doc.fileManage)
-        }
-        if (doc.itemImport) {
-          doc.itemImport = JSON.parse(doc.itemImport)
-          for (const key in doc.itemImport) {
-            if (doc.itemImport[key].BillOfLadingFile) {
-              doc.itemImport[key].BillOfLadingFile = config.baseURL + doc.DocPath + doc.itemImport[key].BillOfLadingFileName
+          if (doc.fileManage) {
+            doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
+          }
+          if (doc.itemImport) {
+            doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))
+            for (const key in doc.itemImport) {
+              if (doc.itemImport[key].BillOfLadingFile) {
+                doc.itemImport[key].BillOfLadingFile = config.baseURL + doc.DocPath + doc.itemImport[key].BillOfLadingFileName
+              }
             }
           }
-        }
         const result = {
           id: doc.id,
           DocNo: doc.DocNo,
@@ -299,20 +299,20 @@ module.exports = {
                 "Job No.": item.JobNo,
                 FROM: '',
                 Supplier: doc.Supplier,
-                item: index+1,
+                item: index + 1,
                 "Delivery Date": doc.DeliveryDate,
                 AWB: doc.AirWayBillNo,
-                Freight:doc.FreightForworder,
-                "เลขที่ใบขน":doc.BillOfLadingNo,
-                Status:doc.Status,
-                "แจ้งรับของ (เรา)":'',
-                "พี่โจ้แจ้งรับ":'',
-                "T/T status":'',
-                "INVOICE NO.":doc.InvoiceNo,
-                "ค่าภาษี":'ทำจ่ายแล้ว',
-                "TAX INV NO.":doc.TaxInvoiceNo,
-                "ค่า Freight":'',
-                "FREIGHT INV NO.":doc.FreightInvoiceNo
+                Freight: doc.FreightForworder,
+                "เลขที่ใบขน": doc.BillOfLadingNo,
+                Status: doc.Status,
+                "แจ้งรับของ (เรา)": '',
+                "พี่โจ้แจ้งรับ": '',
+                "T/T status": '',
+                "INVOICE NO.": doc.InvoiceNo,
+                "ค่าภาษี": 'ทำจ่ายแล้ว',
+                "TAX INV NO.": doc.TaxInvoiceNo,
+                "ค่า Freight": '',
+                "FREIGHT INV NO.": doc.FreightInvoiceNo
               })
             });
           }
@@ -373,7 +373,7 @@ module.exports = {
           PackingListNo: data.PackingListNo,
           itemPR: data.itemPR,
           fileManage: data.fileManage,
-          itemImport:data.itemImport
+          itemImport: data.itemImport
         }
         const docs = await db.sequelize.transaction((t) => {
           return db.po_managements.create(body, { transaction: t }).then(result => id = result.id)

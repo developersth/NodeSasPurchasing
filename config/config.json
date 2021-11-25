@@ -1,11 +1,11 @@
 {
   "development": {
     "username": "root",
-    "password": null,
+    "password": "root",
     "database": "procurement",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "baseURL": "http://dev-ktd.ddns.net:5000/",
+    "baseURL": "http://localhost:4000/",
     "documents": {
       "dir": "uploads/documents/",
       "tempfiles": "uploads/tempfiles/"
