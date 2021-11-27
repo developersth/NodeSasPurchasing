@@ -75,7 +75,8 @@ module.exports = {
         if (doc.FreightInvoiceFile)
           doc.FreightInvoiceFile = config.baseURL + doc.FreightInvoiceFile
         if (doc.itemPR) {
-          doc.itemPR = JSON.parse(JSON.stringify(doc.itemPR))
+          //doc.itemPR = JSON.parse(JSON.stringify(doc.itemPR))
+          doc.itemPR = JSON.parse(doc.itemPR)
           for (const key in doc.itemPR) {
             doc.itemPR[key].PRFile = config.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
             if (doc.itemPR[key].PRFileName) {
@@ -83,10 +84,12 @@ module.exports = {
           }
         }
         if (doc.fileManage) {
-          doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
+          //doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
+          doc.fileManage = JSON.parse(doc.fileManage)
         }
         if (doc.itemImport) {
-          doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))
+          //doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))
+          doc.itemImport = JSON.parse(doc.itemImport)
           for (const key in doc.itemImport) {
             if (doc.itemImport[key].BillOfLadingFile) {
               doc.itemImport[key].BillOfLadingFile = config.baseURL + doc.DocPath + doc.itemImport[key].BillOfLadingFileName
@@ -175,7 +178,8 @@ module.exports = {
         if (doc.FreightInvoiceFile)
           doc.FreightInvoiceFile = config.baseURL + doc.FreightInvoiceFile
           if (doc.itemPR) {
-            doc.itemPR = JSON.parse(JSON.stringify(doc.itemPR))
+            //doc.itemPR = JSON.parse(JSON.stringify(doc.itemPR))
+            doc.itemPR = JSON.parse(doc.itemPR)
             for (const key in doc.itemPR) {
               doc.itemPR[key].PRFile = config.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
               if (doc.itemPR[key].PRFileName) {
@@ -183,15 +187,29 @@ module.exports = {
             }
           }
           if (doc.fileManage) {
-            doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
+            //doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
+            doc.fileManage = JSON.parse(doc.fileManage)
           }
           if (doc.itemImport) {
-            doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))
-            for (const key in doc.itemImport) {
+            //doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))
+            doc.itemImport = JSON.parse(doc.itemImport)
+             for (const key in doc.itemImport) {
               if (doc.itemImport[key].BillOfLadingFile) {
                 doc.itemImport[key].BillOfLadingFile = config.baseURL + doc.DocPath + doc.itemImport[key].BillOfLadingFileName
               }
-            }
+              if (doc.itemImport[key].AirWayBillFile) {
+                doc.itemImport[key].AirWayBillFile = config.baseURL + doc.DocPath + doc.itemImport[key].AirWayBillFileName
+              }
+              if (doc.itemImport[key].TaxInvoiceFile) {
+                doc.itemImport[key].TaxInvoiceFile = config.baseURL + doc.DocPath + doc.itemImport[key].TaxInvoiceFileName
+              }
+              if (doc.itemImport[key].FreightInvoiceFile) {
+                doc.itemImport[key].FreightInvoiceFile = config.baseURL + doc.DocPath + doc.itemImport[key].FreightInvoiceFileName
+              }
+              if (doc.itemImport[key].DeliveryNoticeFile) {
+                doc.itemImport[key].DeliveryNoticeFile = config.baseURL + doc.DocPath + doc.itemImport[key].DeliveryNoticeFileName
+              }
+            } 
           }
         const result = {
           id: doc.id,
@@ -454,6 +472,9 @@ module.exports = {
           if (data.DeliveryDate === 'null')
             data.DeliveryDate = null
         }
+        if (data.itemImport) {
+          data.itemImport = JSON.parse(data.itemImport)
+        }
         const body = {
           Status: data.Status,
           PoNo: data.PoNo,
@@ -477,6 +498,7 @@ module.exports = {
           FreightInvoiceNo: data.FreightInvoiceNo,
           FreightInvoiceValue: data.FreightInvoiceValue || 0,
           itemPR: data.itemPR,
+          itemImport: data.itemImport,
           fileManage: data.fileManage,
           updateBy: data.updateBy,
           updatedAt: new Date()
