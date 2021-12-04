@@ -177,40 +177,40 @@ module.exports = {
           doc.DeliveryNoticeFile = config.baseURL + doc.DeliveryNoticeFile
         if (doc.FreightInvoiceFile)
           doc.FreightInvoiceFile = config.baseURL + doc.FreightInvoiceFile
-        if (doc.itemPR) {
-          //doc.itemPR = JSON.parse(JSON.stringify(doc.itemPR))
-          doc.itemPR = JSON.parse(doc.itemPR)
-          for (const key in doc.itemPR) {
-            doc.itemPR[key].PRFile = config.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
-            if (doc.itemPR[key].PRFileName) {
+          if (doc.itemPR) {
+            //doc.itemPR = JSON.parse(JSON.stringify(doc.itemPR))
+            doc.itemPR = JSON.parse(doc.itemPR)
+            for (const key in doc.itemPR) {
+              doc.itemPR[key].PRFile = config.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
+              if (doc.itemPR[key].PRFileName) {
+              }
             }
           }
-        }
-        if (doc.fileManage) {
-          //doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
-          doc.fileManage = JSON.parse(doc.fileManage)
-        }
-        if (doc.itemImport) {
-          //doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))
-          doc.itemImport = JSON.parse(doc.itemImport)
-          for (const key in doc.itemImport) {
-            if (doc.itemImport[key].BillOfLadingFile) {
-              doc.itemImport[key].BillOfLadingFile = config.baseURL + doc.DocPath + doc.itemImport[key].BillOfLadingFileName
-            }
-            if (doc.itemImport[key].AirWayBillFile) {
-              doc.itemImport[key].AirWayBillFile = config.baseURL + doc.DocPath + doc.itemImport[key].AirWayBillFileName
-            }
-            if (doc.itemImport[key].TaxInvoiceFile) {
-              doc.itemImport[key].TaxInvoiceFile = config.baseURL + doc.DocPath + doc.itemImport[key].TaxInvoiceFileName
-            }
-            if (doc.itemImport[key].FreightInvoiceFile) {
-              doc.itemImport[key].FreightInvoiceFile = config.baseURL + doc.DocPath + doc.itemImport[key].FreightInvoiceFileName
-            }
-            if (doc.itemImport[key].DeliveryNoticeFile) {
-              doc.itemImport[key].DeliveryNoticeFile = config.baseURL + doc.DocPath + doc.itemImport[key].DeliveryNoticeFileName
-            }
+          if (doc.fileManage) {
+            //doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
+            doc.fileManage = JSON.parse(doc.fileManage)
           }
-        }
+          if (doc.itemImport) {
+            //doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))
+            doc.itemImport = JSON.parse(doc.itemImport)
+             for (const key in doc.itemImport) {
+              if (doc.itemImport[key].BillOfLadingFileName) {
+                doc.itemImport[key].BillOfLadingFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].BillOfLadingFileName
+              }
+              if (doc.itemImport[key].AirWayBillFileName) {
+                doc.itemImport[key].AirWayBillFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].AirWayBillFileName
+              }
+              if (doc.itemImport[key].TaxInvoiceFileName) {
+                doc.itemImport[key].TaxInvoiceFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].TaxInvoiceFileName
+              }
+              if (doc.itemImport[key].FreightInvoiceFileName) {
+                doc.itemImport[key].FreightInvoiceFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].FreightInvoiceFileName
+              }
+              if (doc.itemImport[key].DeliveryNoticeFileName) {
+                doc.itemImport[key].DeliveryNoticeFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].DeliveryNoticeFileName
+              }
+            } 
+          }
         const result = {
           id: doc.id,
           DocNo: doc.DocNo,
@@ -474,38 +474,9 @@ module.exports = {
           if (data.DeliveryDate === 'null')
             data.DeliveryDate = null
         }
-        if(data.itemImport){
+        if (data.itemImport) {
           data.itemImport = JSON.parse(data.itemImport)
         }
-/*         const po_managements = await db.po_managements.findOne({ where: { id: id } })
-        if (data.itemImport && po_managements.itemImport) {
-          const obj = JSON.parse(data.itemImport)
-          const objDb = JSON.parse(po_managements.itemImport)
-          for (const key in obj) {
-            console.log(obj[key].BillOfLadingFile)
-            if (!obj[key].BillOfLadingFile) {
-              obj[key].BillOfLadingFile = objDb[key].BillOfLadingFileName
-              obj[key].BillOfLadingFileName = objDb[key].BillOfLadingFileName
-            }
-            if (!obj[key].AirWayBillFile) {
-              obj[key].AirWayBillFile = objDb[key].AirWayBillFile
-              obj[key].AirWayBillFileName = objDb[key].AirWayBillFileName
-            }
-            if (!obj[key].TaxInvoiceFile) {
-              obj[key].TaxInvoiceFile = objDb[key].TaxInvoiceFile
-              obj[key].TaxInvoiceFileName = objDb[key].TaxInvoiceFileName
-            }
-            if (!obj[key].FreightInvoiceFile) {
-              obj[key].FreightInvoiceFile = objDb[key].FreightInvoiceFile
-              obj[key].FreightInvoiceFileName = objDb[key].FreightInvoiceFileName
-            }
-            if (!obj[key].DeliveryNoticeFile) {
-              obj[key].DeliveryNoticeFile = objDb[key].DeliveryNoticeFile
-              obj[key].DeliveryNoticeFileName = objDb[key].DeliveryNoticeFileName
-            }
-          }
-          data.itemImport = obj
-        } */
         const body = {
           Status: data.Status,
           PoNo: data.PoNo,
