@@ -159,58 +159,59 @@ module.exports = {
       const id = req.params.id
       const doc = await db.po_managements.findByPk(id)
       if (doc) {
-        if (doc.PoFile)
-          doc.PoFile = config.baseURL + doc.PoFile
-        if (doc.OrderAckFile)
-          doc.OrderAckFile = config.baseURL + doc.OrderAckFile
-        if (doc.InvoiceFile)
-          doc.InvoiceFile = config.baseURL + doc.InvoiceFile
-        if (doc.PackingListFile)
-          doc.PackingListFile = config.baseURL + doc.PackingListFile
-        if (doc.BillOfLadingFile)
-          doc.BillOfLadingFile = config.baseURL + doc.BillOfLadingFile
-        if (doc.AirWayBillFile)
-          doc.AirWayBillFile = config.baseURL + doc.AirWayBillFile
-        if (doc.TaxInvoiceFile)
-          doc.TaxInvoiceFile = config.baseURL + doc.TaxInvoiceFile
-        if (doc.DeliveryNoticeFile)
-          doc.DeliveryNoticeFile = config.baseURL + doc.DeliveryNoticeFile
-        if (doc.FreightInvoiceFile)
-          doc.FreightInvoiceFile = config.baseURL + doc.FreightInvoiceFile
-          if (doc.itemPR) {
-            //doc.itemPR = JSON.parse(JSON.stringify(doc.itemPR))
-            doc.itemPR = JSON.parse(doc.itemPR)
-            for (const key in doc.itemPR) {
-              doc.itemPR[key].PRFile = config.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
-              if (doc.itemPR[key].PRFileName) {
-              }
+        if (doc.PoFileName)
+          doc.PoFileURL = config.baseURL + doc.DocPath + doc.PoFileName
+        if (doc.OrderAckFileName)
+          doc.OrderAckFileURL = config.baseURL + doc.DocPath + doc.OrderAckFileName
+        if (doc.InvoiceFileName)
+          doc.InvoiceFileURL = config.baseURL + doc.DocPath + doc.InvoiceFileName
+        if (doc.PackingListFileName)
+          doc.PackingListFileURL = config.baseURL + doc.DocPath + doc.PackingListFileName
+        if (doc.BillOfLadingFileName)
+          doc.BillOfLadingFileURL = config.baseURL + doc.DocPath + doc.BillOfLadingFileName
+        if (doc.AirWayBillFileName)
+          doc.AirWayBillFileURL = config.baseURL + doc.DocPath + doc.AirWayBillFileName
+        if (doc.TaxInvoiceFileName)
+          doc.TaxInvoiceFileURL = config.baseURL + doc.DocPath + doc.TaxInvoiceFileName
+        if (doc.DeliveryNoticeFileName)
+          doc.DeliveryNoticeFileURL = config.baseURL + doc.DocPath + doc.DeliveryNoticeFileName
+        if (doc.FreightInvoiceFileName)
+          doc.FreightInvoiceFileURL = config.baseURL + doc.DocPath + doc.FreightInvoiceFileName
+        if (doc.itemPR) {
+          //doc.itemPR = JSON.parse(JSON.stringify(doc.itemPR))
+          doc.itemPR = JSON.parse(doc.itemPR)
+          for (const key in doc.itemPR) {
+            if (doc.itemPR[key].PRFileName) {
+              doc.itemPR[key].PRFileURL = config.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
             }
           }
-          if (doc.fileManage) {
-            //doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
-            doc.fileManage = JSON.parse(doc.fileManage)
+        }
+        if (doc.fileManage) {
+          //doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
+          doc.fileManage = JSON.parse(doc.fileManage)
+        }
+        if (doc.itemImport) {
+          //doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))
+          doc.itemImport = JSON.parse(doc.itemImport)
+          for (const key in doc.itemImport) {
+            if (doc.itemImport[key].BillOfLadingFileName) {
+              doc.itemImport[key].BillOfLadingFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].BillOfLadingFileName
+            }
+            if (doc.itemImport[key].AirWayBillFileName) {
+              doc.itemImport[key].AirWayBillFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].AirWayBillFileName
+            }
+            if (doc.itemImport[key].TaxInvoiceFileName) {
+              doc.itemImport[key].TaxInvoiceFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].TaxInvoiceFileName
+            }
+            if (doc.itemImport[key].FreightInvoiceFileName) {
+              doc.itemImport[key].FreightInvoiceFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].FreightInvoiceFileName
+            }
+            if (doc.itemImport[key].DeliveryNoticeFileName) {
+              doc.itemImport[key].DeliveryNoticeFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].DeliveryNoticeFileName
+            }
           }
-          if (doc.itemImport) {
-            //doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))
-            doc.itemImport = JSON.parse(doc.itemImport)
-             for (const key in doc.itemImport) {
-              if (doc.itemImport[key].BillOfLadingFileName) {
-                doc.itemImport[key].BillOfLadingFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].BillOfLadingFileName
-              }
-              if (doc.itemImport[key].AirWayBillFileName) {
-                doc.itemImport[key].AirWayBillFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].AirWayBillFileName
-              }
-              if (doc.itemImport[key].TaxInvoiceFileName) {
-                doc.itemImport[key].TaxInvoiceFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].TaxInvoiceFileName
-              }
-              if (doc.itemImport[key].FreightInvoiceFileName) {
-                doc.itemImport[key].FreightInvoiceFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].FreightInvoiceFileName
-              }
-              if (doc.itemImport[key].DeliveryNoticeFileName) {
-                doc.itemImport[key].DeliveryNoticeFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].DeliveryNoticeFileName
-              }
-            } 
-          }
+        }
+        const itemEventLog = await db.event_log.findAll({where:{doc_no:doc.DocNo}})
         const result = {
           id: doc.id,
           DocNo: doc.DocNo,
@@ -219,6 +220,7 @@ module.exports = {
           PoNo: doc.PoNo,
           PoFileName: doc.PoFileName,
           PoFile: doc.PoFile,
+          PoFileURL: doc.PoFileURL,
           itemPR: doc.itemPR,
           ProductValue: doc.ProductValue,
           Currency: doc.Currency,
@@ -230,18 +232,22 @@ module.exports = {
           Remarks: doc.Remarks,
           OrderAckFileName: doc.OrderAckFileName,
           OrderAckFile: doc.OrderAckFile,
+          OrderAckFileURL: doc.OrderAckFileURL,
           DeliveryDate: doc.DeliveryDate,
           InvoiceNo: doc.InvoiceNo,
           InvoiceFileName: doc.InvoiceFileName,
           InvoiceFile: doc.InvoiceFile,
+          InvoiceFileURL: doc.InvoiceFileURL,
           PackingListNo: doc.PackingListNo,
           PackingListFileName: doc.PackingListFileName,
           PackingListFile: doc.PackingListFile,
+          PackingListFileURL: doc.PackingListFileURL,
           createBy: doc.createBy,
           updateBy: doc.updateBy,
           DocPath: doc.DocPath,
           fileManage: doc.fileManage,
           itemImport: doc.itemImport,
+          itemEventLog:itemEventLog,
           createdAt: doc.createdAt,
           updatedAt: doc.updatedAt,
         }
@@ -449,6 +455,26 @@ module.exports = {
           PackingListFile: data.PackingListFile
         }
         await db.po_managements.update(docfile, { where: { id: id } }) //update DocNo.
+        //Event Log
+        if (data.itemEventLog) {
+          data.itemEventLog = JSON.parse(data.itemEventLog)
+          const itemEventLog = []
+          for (var key in data.itemEventLog) {
+            itemEventLog.push({
+              doc_no: DocNo,
+              itemNo: data.itemEventLog[key].itemNo,
+              status: data.itemEventLog[key].status,
+              details: data.itemEventLog[key].details,
+              event_date: data.itemEventLog[key].event_date,
+              record_date: new Date(),
+              remark: data.itemEventLog[key].remark,
+              status: data.itemEventLog[key].status,
+            })
+          }
+          const event_log = await db.sequelize.transaction((t) => {
+            return db.event_log.bulkCreate(itemEventLog, { transaction: t })
+          })
+        }
         return res.status(201).json({ success: true, message: 'po_managements Created Successfully', docs })
       } catch (e) {
         return res.json({ success: false, message: 'Cannot store data to database.' })
@@ -591,6 +617,29 @@ module.exports = {
           TaxInvoiceFile: data.TaxInvoiceFile,
         }
         await db.po_managements.update(docfile, { where: { id: id } }) //update DocFile.
+        //Event Log
+        if (data.itemEventLog) {
+          data.itemEventLog = JSON.parse(data.itemEventLog)
+          const itemEventLog = []
+          for (var key in data.itemEventLog) {
+            itemEventLog.push({
+              doc_no: DocNo,
+              itemNo: data.itemEventLog[key].itemNo,
+              status: data.itemEventLog[key].status,
+              details: data.itemEventLog[key].details,
+              event_date: data.itemEventLog[key].event_date,
+              record_date: new Date(),
+              remark: data.itemEventLog[key].remark,
+              status: data.itemEventLog[key].status,
+              update_by:data.updateBy
+            })
+          }
+          //delete itemEvent log before
+          await db.event_log.destroy({ where: { doc_no:DocNo } })
+          const event_log = await db.sequelize.transaction((t) => {
+            return db.event_log.bulkCreate(itemEventLog, { transaction: t })
+          })
+        }
         return res.status(200).json({ success: true, message: 'po_managements Update Successfully', docs })
       } catch (e) {
         return res.json({ success: false, message: 'Cannot store data to database.' })
