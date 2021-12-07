@@ -154,6 +154,7 @@ module.exports = {
       return res.status(500).json({ message: e.message })
     }
   },
+
   findById: async (req, res) => {
     try {
       const id = req.params.id
@@ -186,9 +187,11 @@ module.exports = {
             }
           }
         }
+
         if (doc.fileManage) {
           //doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
           doc.fileManage = JSON.parse(doc.fileManage)
+
         }
         if (doc.itemImport) {
           //doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))

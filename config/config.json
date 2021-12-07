@@ -20,12 +20,12 @@
     "baseURL": "https://ginnovation.th1.proen.cloud/"
   },
   "production": {
-    "username": "h0ap0p29f5eyzkgs",
-    "password": "k3a9ej90bsh9wiab",
-    "database": "tugrcqkdcc2qqqzi",
-    "host": "x8autxobia7sgh74.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    "username": "i5ecxg3imokthcib",
+    "password": "dlheo1ppb07psnhr",
+    "database": "ii2rmqlbfne4hzsl",
+    "host": "xlf3ljx3beaucz9x.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "dialect": "mysql",    
-    "baseURL": "https://sastech.herokuapp.com/",
+    "baseURL": "https://pm-bapi.herokuapp.com/",
     "documents": {
       "dir": "uploads/documents/",
       "tempfiles": "uploads/tempfiles/"
