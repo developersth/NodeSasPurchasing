@@ -54,6 +54,7 @@ module.exports = {
                     sd.Name = 'PO_MANAGEMENT'
                     and sd.ColumnName = 'P_STATUS' 
                     ORDER BY pm.DocNo DESC`
+      //const docs = await sequelize.query(sql, { type: Op.SELECT });
       const docs = await sequelize.query(sql, { type: Op.SELECT });
       const result = docs[0].map((doc) => {
         if (doc.PoFile)
@@ -64,17 +65,7 @@ module.exports = {
           doc.InvoiceFile = config.baseURL + doc.InvoiceFile
         if (doc.PackingListFile)
           doc.PackingListFile = config.baseURL + doc.PackingListFile
-        if (doc.BillOfLadingFile)
-          doc.BillOfLadingFile = config.baseURL + doc.BillOfLadingFile
-        if (doc.AirWayBillFile)
-          doc.AirWayBillFile = config.baseURL + doc.AirWayBillFile
-        if (doc.TaxInvoiceFile)
-          doc.TaxInvoiceFile = config.baseURL + doc.TaxInvoiceFile
-        if (doc.DeliveryNoticeFile)
-          doc.DeliveryNoticeFile = config.baseURL + doc.DeliveryNoticeFile
-        if (doc.FreightInvoiceFile)
-          doc.FreightInvoiceFile = config.baseURL + doc.FreightInvoiceFile
-        if (doc.itemPR) {
+       /*  if (doc.itemPR) {
           //doc.itemPR = JSON.parse(JSON.stringify(doc.itemPR))
           doc.itemPR = JSON.parse(doc.itemPR)
           for (const key in doc.itemPR) {
@@ -82,20 +73,11 @@ module.exports = {
             if (doc.itemPR[key].PRFileName) {
             }
           }
-        }
-        if (doc.fileManage) {
+        } */
+       /*  if (doc.fileManage) {
           //doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
           doc.fileManage = JSON.parse(doc.fileManage)
-        }
-        if (doc.itemImport) {
-          //doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))
-          doc.itemImport = JSON.parse(doc.itemImport)
-          for (const key in doc.itemImport) {
-            if (doc.itemImport[key].BillOfLadingFile) {
-              doc.itemImport[key].BillOfLadingFile = config.baseURL + doc.DocPath + doc.itemImport[key].BillOfLadingFileName
-            }
-          }
-        }
+        } */
         return {
           id: doc.id,
           DocNo: doc.DocNo,
@@ -106,7 +88,6 @@ module.exports = {
           PoNo: doc.PoNo,
           PoFileName: doc.PoFileName,
           PoFile: doc.PoFile,
-          itemPR: doc.itemPR,
           ProductValue: doc.ProductValue,
           Currency: doc.Currency,
           Buyer: doc.Buyer,
@@ -127,8 +108,6 @@ module.exports = {
           createBy: doc.createBy,
           updateBy: doc.updateBy,
           DocPath: doc.DocPath,
-          fileManage: doc.fileManage,
-          itemImport: doc.itemImport,
           createdAt: doc.createdAt,
           updatedAt: doc.updatedAt,
         }
@@ -154,7 +133,7 @@ module.exports = {
           doc.PackingListFileURL = config.baseURL + doc.DocPath + doc.PackingListFileName
         if (doc.itemPR) {
           //doc.itemPR = JSON.parse(JSON.stringify(doc.itemPR))
-          doc.itemPR = JSON.parse(doc.itemPR)
+          //doc.itemPR = JSON.parse(doc.itemPR)
           for (const key in doc.itemPR) {
             if (doc.itemPR[key].PRFileName) {
               doc.itemPR[key].PRFileURL = config.baseURL + doc.DocPath + doc.itemPR[key].PRFileName
@@ -163,11 +142,11 @@ module.exports = {
         }
         if (doc.fileManage) {
           //doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
-          doc.fileManage = JSON.parse(doc.fileManage)
+          //doc.fileManage = JSON.parse(doc.fileManage)
         }
         if (doc.itemImport) {
           //doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))
-          doc.itemImport = JSON.parse(doc.itemImport)
+          //doc.itemImport = JSON.parse(doc.itemImport)
           for (const key in doc.itemImport) {
             if (doc.itemImport[key].BillOfLadingFileName) {
               doc.itemImport[key].BillOfLadingFileURL = config.baseURL + doc.DocPath + doc.itemImport[key].BillOfLadingFileName
