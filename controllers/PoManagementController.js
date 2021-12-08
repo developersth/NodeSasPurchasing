@@ -124,22 +124,6 @@ module.exports = {
           PackingListNo: doc.PackingListNo,
           PackingListFileName: doc.PackingListFileName,
           PackingListFile: doc.PackingListFile,
-          FreightForworder: doc.FreightForworder,
-          BillOfLadingNo: doc.BillOfLadingNo,
-          BillOfLadingFileName: doc.BillOfLadingFileName,
-          BillOfLadingFile: doc.BillOfLadingFile,
-          AirWayBillNo: doc.AirWayBillNo,
-          AirWayBillFileName: doc.AirWayBillFileName,
-          AirWayBillFile: doc.AirWayBillFile,
-          TaxInvoiceNo: doc.TaxInvoiceNo,
-          TaxInvoiceFileName: doc.TaxInvoiceFileName,
-          TaxInvoiceFile: doc.TaxInvoiceFile,
-          TaxValue: doc.TaxValue,
-          FreightInvoiceNo: doc.FreightInvoiceNo,
-          FreightInvoiceFileName: doc.FreightInvoiceFileName,
-          FreightInvoiceFile: doc.FreightInvoiceFile,
-          FreightInvoiceValue: doc.FreightInvoiceValue,
-          DeliveryNoticeFile: doc.DeliveryNoticeFile,
           createBy: doc.createBy,
           updateBy: doc.updateBy,
           DocPath: doc.DocPath,
@@ -168,16 +152,6 @@ module.exports = {
           doc.InvoiceFileURL = config.baseURL + doc.DocPath + doc.InvoiceFileName
         if (doc.PackingListFileName)
           doc.PackingListFileURL = config.baseURL + doc.DocPath + doc.PackingListFileName
-        if (doc.BillOfLadingFileName)
-          doc.BillOfLadingFileURL = config.baseURL + doc.DocPath + doc.BillOfLadingFileName
-        if (doc.AirWayBillFileName)
-          doc.AirWayBillFileURL = config.baseURL + doc.DocPath + doc.AirWayBillFileName
-        if (doc.TaxInvoiceFileName)
-          doc.TaxInvoiceFileURL = config.baseURL + doc.DocPath + doc.TaxInvoiceFileName
-        if (doc.DeliveryNoticeFileName)
-          doc.DeliveryNoticeFileURL = config.baseURL + doc.DocPath + doc.DeliveryNoticeFileName
-        if (doc.FreightInvoiceFileName)
-          doc.FreightInvoiceFileURL = config.baseURL + doc.DocPath + doc.FreightInvoiceFileName
         if (doc.itemPR) {
           //doc.itemPR = JSON.parse(JSON.stringify(doc.itemPR))
           doc.itemPR = JSON.parse(doc.itemPR)
@@ -187,11 +161,9 @@ module.exports = {
             }
           }
         }
-
         if (doc.fileManage) {
           //doc.fileManage = JSON.parse(JSON.stringify(doc.fileManage))
           doc.fileManage = JSON.parse(doc.fileManage)
-
         }
         if (doc.itemImport) {
           //doc.itemImport = JSON.parse(JSON.stringify(doc.itemImport))
@@ -337,7 +309,6 @@ module.exports = {
                 "T/T status": '',
                 "INVOICE NO.": doc.InvoiceNo,
                 "ค่าภาษี": 'ทำจ่ายแล้ว',
-                "TAX INV NO.": doc.TaxInvoiceNo,
                 "ค่า Freight": '',
                 "FREIGHT INV NO.": doc.FreightInvoiceNo
               })
@@ -521,13 +492,6 @@ module.exports = {
           DeliveryDate: data.DeliveryDate,
           InvoiceNo: data.InvoiceNo,
           PackingListNo: data.PackingListNo,
-          FreightForworder: data.FreightForworder,
-          BillOfLadingNo: data.BillOfLadingNo,
-          AirWayBillNo: data.AirWayBillNo,
-          TaxInvoiceNo: data.TaxInvoiceNo,
-          TaxValue: data.TaxValue || 0,
-          FreightInvoiceNo: data.FreightInvoiceNo,
-          FreightInvoiceValue: data.FreightInvoiceValue || 0,
           itemPR: data.itemPR,
           itemImport: data.itemImport,
           fileManage: data.fileManage,

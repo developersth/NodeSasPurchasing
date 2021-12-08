@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "procurement",
-    "host": "127.0.0.1",
+    "username": "i5ecxg3imokthcib",
+    "password": "dlheo1ppb07psnhr",
+    "database": "ii2rmqlbfne4hzsl",
+    "host": "xlf3ljx3beaucz9x.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "dialect": "mysql",
     "baseURL": "http://localhost:5000/",
     "documents": {
